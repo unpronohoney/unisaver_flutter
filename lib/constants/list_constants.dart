@@ -3,7 +3,7 @@ import 'package:unisaver_flutter/constants/colors.dart';
 
 BoxDecoration listCardDecoration(BuildContext context) {
   return BoxDecoration(
-    color: AppColors.black.withValues(alpha: 0.06),
+    color: AppColors.white.withValues(alpha: 0.06),
     borderRadius: BorderRadius.circular(18),
     border: Border.all(color: Colors.white.withValues(alpha: 0.10), width: 1.2),
     boxShadow: [

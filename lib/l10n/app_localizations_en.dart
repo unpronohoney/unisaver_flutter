@@ -352,6 +352,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings => 'Settings';
 
   @override
+  String get hi => 'Hi';
+
+  @override
   String get add_letter_grade => 'Add Letter Grade';
 
   @override
@@ -488,95 +491,4 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get act_3_head2 => 'Report errors and your thoughts to us';
-
-  @override
-  String get ilk_bildo => 'HEEEYYYYOOOO ! ! !';
-
-  @override
-  String get ilk_bildo_text =>
-      'Thank you for using UniSaver. You are fascinating!';
-
-  @override
-  String get pool1_1 =>
-      'If you\'ve left final exams to the last day, I\'m here to ease your mind. 😊';
-
-  @override
-  String get pool1_2 =>
-      'Some classes deserve to be left for the make-up exam, right? 😈';
-
-  @override
-  String get pool1_3 =>
-      'It’s kinda hard to plan from scratch 🙄. I\'m still here for you!';
-
-  @override
-  String get pool2_1 =>
-      'Don\'t forget, I can help with lesson selection too! 😊';
-
-  @override
-  String get pool2_2 => 'We\'ll catch up with the Fall term in Spring. 😉';
-
-  @override
-  String get pool2_3 =>
-      'I\'m here to help you graduate only half a term late—not a full year! 😒';
-
-  @override
-  String get pool3_1 =>
-      'Too many lessons, which one should you focus on? Let’s figure it out together. 🧐';
-
-  @override
-  String get pool3_2 => 'Sometimes, skipping midterms is okay 😈';
-
-  @override
-  String get pool3_3 => 'Plan during midterms, chill during finals 😎';
-
-  @override
-  String get pool4_1 =>
-      'While everyone is stressing during finals week, you use UniSaver!';
-
-  @override
-  String get pool4_2 =>
-      'Let\'s plan first - then we’ll have an amazing vacation! 🤤';
-
-  @override
-  String get pool4_3 =>
-      'TOO MUCH STRESS? Open UniSaver and take a deep breath. 🤗';
-
-  @override
-  String get pool5_1 =>
-      'Think ahead with UniSaver and enjoy peace of mind in the new year. 🥳';
-
-  @override
-  String get pool5_2 => 'Time to shake off the vacation mode—just a little. 😩';
-
-  @override
-  String get pool5_3 => 'UniSaver is here for your lesson selections too!!! 🙄';
-
-  @override
-  String get pool6_1 =>
-      'Which lesson are you planning to drop? Let’s decide together. 🥶';
-
-  @override
-  String get pool6_2 => 'Midterms already? Feeling overwhelmed? I’m here ✋';
-
-  @override
-  String get pool6_3 =>
-      'If Differential Equations were a Netflix villain, even top students would skip the season. Let UniSaver help you survive the plot. 😇';
-
-  @override
-  String get head1 => 'Make-Up or Final? 🤨🤨🤨';
-
-  @override
-  String get head2 => 'Let\'s Choose Spring Lessons Together 🙃';
-
-  @override
-  String get head3 => 'Whoa! Midterms Incoming!';
-
-  @override
-  String get head4 => 'FIIINAAALS!';
-
-  @override
-  String get head5 => 'Ready for the New Year??';
-
-  @override
-  String get head6 => 'Midterms Are Close…';
 }

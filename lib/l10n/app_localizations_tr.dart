@@ -351,6 +351,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settings => 'Ayarlar';
 
   @override
+  String get hi => 'Selam';
+
+  @override
   String get add_letter_grade => 'Harf Notunu Ekle';
 
   @override
@@ -487,90 +490,4 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get act_3_head2 => 'Hatalar ve düşüncelerinizi bize bildirin';
-
-  @override
-  String get ilk_bildo => 'SEEELLLLAMMM ! ! !';
-
-  @override
-  String get ilk_bildo_text =>
-      'UniSaver\'ı kullandığın için teşekkür ederiz. Mükemmelsin!';
-
-  @override
-  String get pool1_1 =>
-      'Finalleri son güne bıraktıysan, içini rahatlatmak için buradayım. 😊';
-
-  @override
-  String get pool1_2 => 'Bazı dersler de büte bırakılmalı dimi?¿ 🤠';
-
-  @override
-  String get pool1_3 => 'Kafadan planlamak zor gibi 🙄. Yine de ben buradayım!';
-
-  @override
-  String get pool2_1 => 'Ders seçimine de yardımcı olabileceğimi unutma. 😊';
-
-  @override
-  String get pool2_2 => 'Güz\'ü Bahar\'da toplarızzzzz. 😉';
-
-  @override
-  String get pool2_3 =>
-      'Bir sene değil de yarım dönem uzatmana yardımcı olmak için buradayım. 😒';
-
-  @override
-  String get pool3_1 =>
-      'Çok ders var hangisine odaklanacaksın? Gel beraber öğrenelim. 🧐';
-
-  @override
-  String get pool3_2 => 'Bazen vizeler de sallanabilir. 🤠';
-
-  @override
-  String get pool3_3 => 'Vizelerden planlarsan final haftasında yatarsın. 😉';
-
-  @override
-  String get pool4_1 =>
-      'Final haftasında herkes telaş yaparken sen UniSaver kullan!';
-
-  @override
-  String get pool4_2 =>
-      'Finaller bitsin süper bi tatil yaparız. Ama önce planlayalım. 😊';
-
-  @override
-  String get pool4_3 => 'ÇOK MU ZOR YA! UniSaver\'ı aç içini rahatlat. 🤗';
-
-  @override
-  String get pool5_1 => 'Yeni seneyi UniSaver\'da düşün, kafan rahat olsun. 🥳';
-
-  @override
-  String get pool5_2 => 'Tatil modundan çıkma vakti birazcık. 😒';
-
-  @override
-  String get pool5_3 => 'Ders seçiminde de UniSaver!!!';
-
-  @override
-  String get pool6_1 => 'Hangi dersi bırakacaksın, gel birlikte seçelim. 🥶';
-
-  @override
-  String get pool6_2 =>
-      'Ne ara vizeler geldi ya, canın sıkıldıysa ben buradayım. ✋';
-
-  @override
-  String get pool6_3 =>
-      'Diferansiyel Denklemler\'de Boğaziçili, vizelerde hangisine odaklanacağında UniSaver. 😇';
-
-  @override
-  String get head1 => 'BÜT MÜ¿ FİNAL Mİ? 🤨🤨🤨';
-
-  @override
-  String get head2 => 'Bahar\'a Birlikte Ders Seçelim 🙃';
-
-  @override
-  String get head3 => 'Fiyuu. Vizeler geliyor!';
-
-  @override
-  String get head4 => 'FİNALSSSS!';
-
-  @override
-  String get head5 => 'Yeni Seneye Hazır Mıyızzz??';
-
-  @override
-  String get head6 => 'Vizeler Yakın…';
 }

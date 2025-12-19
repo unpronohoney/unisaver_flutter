@@ -115,7 +115,7 @@ class _MainScreenState extends State<MainScreen> {
                       },
                       icon: Icon(
                         Icons.question_mark_rounded,
-                        size: 36,
+                        size: 32,
                         color: Theme.of(context).colorScheme.secondaryFixed,
                         shadows: [
                           Shadow(

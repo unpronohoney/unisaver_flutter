@@ -198,7 +198,6 @@ class TranscriptReader extends ChangeNotifier {
       l.no = counter;
       counter++;
     }
-
     compute();
   }
 
@@ -257,6 +256,16 @@ class TranscriptReader extends ChangeNotifier {
     deleteds.clear();
     _extractTableData(text);
     backUp();
+    double gpa = (_gpa * 100).round() / 100;
+    if (_roundedComputedGpa != gpa && _cred != _computedCred) {
+      diffLevel = 3;
+    } else if (_roundedComputedGpa != gpa) {
+      diffLevel = 1;
+    } else if (_cred != _computedCred) {
+      diffLevel = 2;
+    } else {
+      diffLevel = 0;
+    }
   }
 
   void _extractTableData(String text) {
@@ -339,16 +348,6 @@ class TranscriptReader extends ChangeNotifier {
     }
     for (String str in notes.keys) {
       initUsedNotes[str] = lessonLetters.contains(str);
-    }
-    double gpa = (_gpa * 100).round() / 100;
-    if (_roundedComputedGpa != gpa && _cred != _computedCred) {
-      diffLevel = 3;
-    } else if (_roundedComputedGpa != gpa) {
-      diffLevel = 1;
-    } else if (_cred != _computedCred) {
-      diffLevel = 2;
-    } else {
-      diffLevel = 0;
     }
   }
 

@@ -722,6 +722,12 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settings;
 
+  /// No description provided for @hi.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi'**
+  String get hi;
+
   /// No description provided for @add_letter_grade.
   ///
   /// In en, this message translates to:
@@ -973,162 +979,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Report errors and your thoughts to us'**
   String get act_3_head2;
-
-  /// No description provided for @ilk_bildo.
-  ///
-  /// In en, this message translates to:
-  /// **'HEEEYYYYOOOO ! ! !'**
-  String get ilk_bildo;
-
-  /// No description provided for @ilk_bildo_text.
-  ///
-  /// In en, this message translates to:
-  /// **'Thank you for using UniSaver. You are fascinating!'**
-  String get ilk_bildo_text;
-
-  /// No description provided for @pool1_1.
-  ///
-  /// In en, this message translates to:
-  /// **'If you\'ve left final exams to the last day, I\'m here to ease your mind. 😊'**
-  String get pool1_1;
-
-  /// No description provided for @pool1_2.
-  ///
-  /// In en, this message translates to:
-  /// **'Some classes deserve to be left for the make-up exam, right? 😈'**
-  String get pool1_2;
-
-  /// No description provided for @pool1_3.
-  ///
-  /// In en, this message translates to:
-  /// **'It’s kinda hard to plan from scratch 🙄. I\'m still here for you!'**
-  String get pool1_3;
-
-  /// No description provided for @pool2_1.
-  ///
-  /// In en, this message translates to:
-  /// **'Don\'t forget, I can help with lesson selection too! 😊'**
-  String get pool2_1;
-
-  /// No description provided for @pool2_2.
-  ///
-  /// In en, this message translates to:
-  /// **'We\'ll catch up with the Fall term in Spring. 😉'**
-  String get pool2_2;
-
-  /// No description provided for @pool2_3.
-  ///
-  /// In en, this message translates to:
-  /// **'I\'m here to help you graduate only half a term late—not a full year! 😒'**
-  String get pool2_3;
-
-  /// No description provided for @pool3_1.
-  ///
-  /// In en, this message translates to:
-  /// **'Too many lessons, which one should you focus on? Let’s figure it out together. 🧐'**
-  String get pool3_1;
-
-  /// No description provided for @pool3_2.
-  ///
-  /// In en, this message translates to:
-  /// **'Sometimes, skipping midterms is okay 😈'**
-  String get pool3_2;
-
-  /// No description provided for @pool3_3.
-  ///
-  /// In en, this message translates to:
-  /// **'Plan during midterms, chill during finals 😎'**
-  String get pool3_3;
-
-  /// No description provided for @pool4_1.
-  ///
-  /// In en, this message translates to:
-  /// **'While everyone is stressing during finals week, you use UniSaver!'**
-  String get pool4_1;
-
-  /// No description provided for @pool4_2.
-  ///
-  /// In en, this message translates to:
-  /// **'Let\'s plan first - then we’ll have an amazing vacation! 🤤'**
-  String get pool4_2;
-
-  /// No description provided for @pool4_3.
-  ///
-  /// In en, this message translates to:
-  /// **'TOO MUCH STRESS? Open UniSaver and take a deep breath. 🤗'**
-  String get pool4_3;
-
-  /// No description provided for @pool5_1.
-  ///
-  /// In en, this message translates to:
-  /// **'Think ahead with UniSaver and enjoy peace of mind in the new year. 🥳'**
-  String get pool5_1;
-
-  /// No description provided for @pool5_2.
-  ///
-  /// In en, this message translates to:
-  /// **'Time to shake off the vacation mode—just a little. 😩'**
-  String get pool5_2;
-
-  /// No description provided for @pool5_3.
-  ///
-  /// In en, this message translates to:
-  /// **'UniSaver is here for your lesson selections too!!! 🙄'**
-  String get pool5_3;
-
-  /// No description provided for @pool6_1.
-  ///
-  /// In en, this message translates to:
-  /// **'Which lesson are you planning to drop? Let’s decide together. 🥶'**
-  String get pool6_1;
-
-  /// No description provided for @pool6_2.
-  ///
-  /// In en, this message translates to:
-  /// **'Midterms already? Feeling overwhelmed? I’m here ✋'**
-  String get pool6_2;
-
-  /// No description provided for @pool6_3.
-  ///
-  /// In en, this message translates to:
-  /// **'If Differential Equations were a Netflix villain, even top students would skip the season. Let UniSaver help you survive the plot. 😇'**
-  String get pool6_3;
-
-  /// No description provided for @head1.
-  ///
-  /// In en, this message translates to:
-  /// **'Make-Up or Final? 🤨🤨🤨'**
-  String get head1;
-
-  /// No description provided for @head2.
-  ///
-  /// In en, this message translates to:
-  /// **'Let\'s Choose Spring Lessons Together 🙃'**
-  String get head2;
-
-  /// No description provided for @head3.
-  ///
-  /// In en, this message translates to:
-  /// **'Whoa! Midterms Incoming!'**
-  String get head3;
-
-  /// No description provided for @head4.
-  ///
-  /// In en, this message translates to:
-  /// **'FIIINAAALS!'**
-  String get head4;
-
-  /// No description provided for @head5.
-  ///
-  /// In en, this message translates to:
-  /// **'Ready for the New Year??'**
-  String get head5;
-
-  /// No description provided for @head6.
-  ///
-  /// In en, this message translates to:
-  /// **'Midterms Are Close…'**
-  String get head6;
 }
 
 class _AppLocalizationsDelegate

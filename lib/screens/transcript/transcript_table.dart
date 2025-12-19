@@ -54,6 +54,7 @@ class _TranscriptTableState extends State<TranscriptTable> {
     letterNotifier.dispose();
     lecName.dispose();
     lecCred.dispose();
+    _shown = false;
     super.dispose();
   }
 
@@ -91,6 +92,7 @@ class _TranscriptTableState extends State<TranscriptTable> {
                   icon: Icons.arrow_back_ios_new_rounded,
                   onHomePressed: () {
                     reader!.reset();
+                    _shown = false;
                     Navigator.pop(context);
                   },
                   onBackUpPressed: () {
@@ -110,7 +112,7 @@ class _TranscriptTableState extends State<TranscriptTable> {
                         SizedBox(
                           width: double.infinity,
                           child: Text(
-                            'Selam ${reader!.studentName}',
+                            '${t(context).hi} ${reader!.studentName}',
                             style: TextStyle(
                               fontFamily: 'MontserratAlternates',
                               fontSize: 18,
@@ -378,6 +380,7 @@ class _TranscriptTableState extends State<TranscriptTable> {
       blendMode: BlendMode.dstIn,
       child: ListView.builder(
         itemCount: letters.length,
+        padding: EdgeInsets.symmetric(vertical: 16),
         itemBuilder: (context, index) {
           final grade = letters[index];
           final isUsed = lettersWithUsages[grade]!;
