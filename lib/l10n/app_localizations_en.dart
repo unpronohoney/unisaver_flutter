@@ -12,16 +12,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get main_welcome => 'Welcome';
 
   @override
-  String get main_btns1 => 'Manual GPA Calculator';
+  String get main_btns1 => 'Manually';
 
   @override
-  String get main_btns2 => 'GPA Calculator by Combinations';
+  String get main_btns2 => 'By Combinations';
 
   @override
-  String get main_btns3 => 'GPA Calculator with Transcript';
+  String get main_btns3 => 'With Transcript';
 
   @override
-  String get main_head1 => 'Choose an option:';
+  String get manuel_desc =>
+      'First, give GPA and total credits.\nThen enter your lessons with old grade and your new grade.\nUniSaver calculates GPA every step.';
+
+  @override
+  String get combination_desc =>
+      'First, GPA and total credits;\nThen enter lessons you want with old grades.\nList lessons by difficulties.\nReduce total combination count by constraints.\nView results.';
+
+  @override
+  String get transcript_desc =>
+      'Select your e-Devlet transcript.\nWait a little bit.\nAnd, UniSaver scanned whole transcript and created table with your lessons.\nYou can make every changes with this table.';
+
+  @override
+  String get main_head1 => 'Calculate your GPA:';
 
   @override
   String get main_head2 => 'Privacy Policy';

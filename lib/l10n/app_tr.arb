@@ -1,10 +1,14 @@
 {
   "@@locale": "tr",
   "main_welcome": "Hoşgeldiniz",
-  "main_btns1": "Manuel Agno Hesabı",
-  "main_btns2": "Kombinasyonlu Agno Hesabı",
-  "main_btns3": "Transkript ile Agno Hesabı",
-  "main_head1": "Lütfen işlem seçiniz:",
+  "main_btns1": "Manuel",
+  "main_btns2": "Kombinasyonlu",
+  "main_btns3": "Transkript ile",
+  "manuel_desc": "Önce AGNO ve toplam kredi bilgilerini ver.\nSonra derslerini eski ve yeni not bilgileriyle gir.\nUniSaver AGNO'yu her aşamada hesaplasın.",
+  "combination_desc": "Önce, AGNO ve toplam kredi;\nSonra istediğin dersleri eski notlarıyla gir.\nDersleri zorluklarına göre sırala.\nToplam kombinasyon sayısını kısıtlar ile azalt.\nSonuçları görüntüle.",
+  "transcript_desc": "E-Devlet transkriptini seç.\nBirazcık bekle.\nVe, UniSaver tüm transkripti taradı ve derslerini tablo haline getirdi.\nBütün değişiklikleri bu tablo ile yapabilirsin.",
+
+  "main_head1": "AGNO'nu şununla hesapla:",
   "main_head2": "Gizlilik Politikası",
   "main_head3": "Geri Bildirim Silme Talebi",
   "menu1": "Harf Notlarını Özelleştir",

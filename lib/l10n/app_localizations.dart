@@ -107,25 +107,43 @@ abstract class AppLocalizations {
   /// No description provided for @main_btns1.
   ///
   /// In en, this message translates to:
-  /// **'Manual GPA Calculator'**
+  /// **'Manually'**
   String get main_btns1;
 
   /// No description provided for @main_btns2.
   ///
   /// In en, this message translates to:
-  /// **'GPA Calculator by Combinations'**
+  /// **'By Combinations'**
   String get main_btns2;
 
   /// No description provided for @main_btns3.
   ///
   /// In en, this message translates to:
-  /// **'GPA Calculator with Transcript'**
+  /// **'With Transcript'**
   String get main_btns3;
+
+  /// No description provided for @manuel_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'First, give GPA and total credits.\nThen enter your lessons with old grade and your new grade.\nUniSaver calculates GPA every step.'**
+  String get manuel_desc;
+
+  /// No description provided for @combination_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'First, GPA and total credits;\nThen enter lessons you want with old grades.\nList lessons by difficulties.\nReduce total combination count by constraints.\nView results.'**
+  String get combination_desc;
+
+  /// No description provided for @transcript_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your e-Devlet transcript.\nWait a little bit.\nAnd, UniSaver scanned whole transcript and created table with your lessons.\nYou can make every changes with this table.'**
+  String get transcript_desc;
 
   /// No description provided for @main_head1.
   ///
   /// In en, this message translates to:
-  /// **'Choose an option:'**
+  /// **'Calculate your GPA:'**
   String get main_head1;
 
   /// No description provided for @main_head2.

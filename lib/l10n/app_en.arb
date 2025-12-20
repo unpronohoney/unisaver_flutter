@@ -1,10 +1,14 @@
 {
   "@@locale": "en",
   "main_welcome": "Welcome",
-  "main_btns1": "Manual GPA Calculator",
-  "main_btns2": "GPA Calculator by Combinations",
-  "main_btns3": "GPA Calculator with Transcript",
-  "main_head1": "Choose an option:",
+  "main_btns1": "Manually",
+  "main_btns2": "By Combinations",
+  "main_btns3": "With Transcript",
+  "manuel_desc": "First, give GPA and total credits.\nThen enter your lessons with old grade and your new grade.\nUniSaver calculates GPA every step.",
+  "combination_desc": "First, GPA and total credits;\nThen enter lessons you want with old grades.\nList lessons by difficulties.\nReduce total combination count by constraints.\nView results.",
+  "transcript_desc": "Select your e-Devlet transcript.\nWait a little bit.\nAnd, UniSaver scanned whole transcript and created table with your lessons.\nYou can make every changes with this table.",
+
+  "main_head1": "Calculate your GPA:",
   "main_head2": "Privacy Policy",
   "main_head3": "Feedback Deletion Request",
   "menu1": "Customize Letter Grades",

@@ -11,7 +11,9 @@ import 'package:unisaver_flutter/l10n/app_localizations.dart';
 import 'package:unisaver_flutter/utils/language_firebase.dart';
 import 'package:unisaver_flutter/utils/language_provider.dart';
 import 'package:unisaver_flutter/utils/theme_controller.dart';
+import 'package:unisaver_flutter/widgets/buttons/main_page_button.dart';
 import 'package:unisaver_flutter/widgets/buttons/purple_button.dart';
+import 'package:unisaver_flutter/widgets/dialogs/info_and_bottom_sheet.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../constants/colors.dart';
 import 'package:unisaver_flutter/utils/loc.dart';
@@ -25,6 +27,10 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  bool _manuelInfo = false;
+  bool _combInfo = false;
+  bool _transInfo = false;
+
   @override
   void initState() {
     super.initState();
@@ -108,6 +114,7 @@ class _MainScreenState extends State<MainScreen> {
             child: Column(
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
                       onPressed: () {
@@ -117,13 +124,6 @@ class _MainScreenState extends State<MainScreen> {
                         Icons.question_mark_rounded,
                         size: 32,
                         color: Theme.of(context).colorScheme.secondaryFixed,
-                        shadows: [
-                          Shadow(
-                            color: AppColors.niceBlack.withValues(alpha: 0.65),
-                            blurRadius: 6,
-                            offset: const Offset(2, 2),
-                          ),
-                        ],
                       ),
                     ),
 
@@ -139,16 +139,7 @@ class _MainScreenState extends State<MainScreen> {
                           icon: Icon(
                             Icons.more_vert,
                             color: Theme.of(context).colorScheme.secondaryFixed,
-                            size: 34,
-                            shadows: [
-                              Shadow(
-                                color: AppColors.niceBlack.withValues(
-                                  alpha: 0.65,
-                                ),
-                                blurRadius: 6,
-                                offset: Offset(2, 2),
-                              ),
-                            ],
+                            size: 32,
                           ),
                         );
                       },
@@ -276,42 +267,41 @@ class _MainScreenState extends State<MainScreen> {
                   ],
                 ),
 
-                // SCROLL VIEW
                 Expanded(
                   child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
                     child: Column(
                       children: [
-                        SizedBox(height: 10.h),
-                        Text(
-                          'UniSaver',
-                          style: TextStyle(
-                            fontFamily: 'MontserratAlternates',
-                            fontSize: 72,
-                            color: Theme.of(context).colorScheme.secondaryFixed,
-                            shadows: [
-                              Shadow(
-                                color: AppColors.niceBlack.withValues(
-                                  alpha: 0.65,
-                                ),
-                                blurRadius: 8,
-                                offset: Offset(4, 4),
+                        SizedBox(height: 6.h),
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minWidth: 0,
+                            maxWidth: 90.w,
+                          ),
+                          child: FittedBox(
+                            child: Text(
+                              'UniSaver',
+                              style: TextStyle(
+                                fontFamily: 'MontserratAlternates',
+                                fontSize: 72,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.secondaryFixed,
+                                shadows: [
+                                  Shadow(
+                                    color: AppColors.niceBlack.withValues(
+                                      alpha: 0.65,
+                                    ),
+                                    blurRadius: 8,
+                                    offset: Offset(4, 4),
+                                  ),
+                                ],
                               ),
-                            ],
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                          textAlign: TextAlign.center,
                         ),
-                        SizedBox(height: 2.h),
-                        Text(
-                          t(context).main_welcome,
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontStyle: FontStyle.italic,
-                            fontSize: 16,
-                            color: Theme.of(context).colorScheme.secondaryFixed,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 10.h),
+                        SizedBox(height: 8.h),
                         Text(
                           t(context).main_head1,
                           style: TextStyle(
@@ -332,18 +322,12 @@ class _MainScreenState extends State<MainScreen> {
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 4.h),
-                        // Butonlar
-                        _buildButton(context, t(context).main_btns1, () {
-                          Navigator.pushNamed(context, '/manuel');
-                        }),
-                        SizedBox(height: 3.h),
-                        _buildButton(context, t(context).main_btns2, () {
-                          Navigator.pushNamed(context, '/combination');
-                        }),
-                        SizedBox(height: 3.h),
-                        _buildButton(context, t(context).main_btns3, () {
-                          Navigator.pushNamed(context, '/transcript');
-                        }),
+
+                        MainPageButton(function: 1),
+                        SizedBox(height: 4.h),
+                        MainPageButton(function: 2),
+                        SizedBox(height: 4.h),
+                        MainPageButton(function: 3),
                         SizedBox(height: 6.h),
                       ],
                     ),
@@ -352,9 +336,13 @@ class _MainScreenState extends State<MainScreen> {
 
                 // ALT METİNLER
                 Padding(
-                  padding: EdgeInsets.only(bottom: 2.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  padding: EdgeInsets.only(
+                    bottom: 2.h,
+                    left: 4.w,
+                    right: 4.w,
+                    top: 2.h,
+                  ),
+                  child: Wrap(
                     children: [
                       _bottomText(t(context).main_head2, () async {
                         final Uri uri = Uri.parse(
@@ -438,48 +426,6 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _buildButton(
-    BuildContext context,
-    String text,
-    VoidCallback onPressed,
-  ) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minWidth: 0, // minimum genişlik kaldır
-        maxWidth: double.infinity, // isteğe bağlı, gerekiyorsa sınır koy
-      ),
-      child: IntrinsicWidth(
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.primaryFixed,
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              side: BorderSide(
-                color: Theme.of(context).colorScheme.secondary,
-                width: 3,
-              ),
-            ),
-          ),
-          onPressed: onPressed,
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              text,
-              style: TextStyle(
-                fontFamily: 'MontserratAlternates',
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _bottomText(String text, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
@@ -487,7 +433,8 @@ class _MainScreenState extends State<MainScreen> {
         text,
         style: TextStyle(
           fontFamily: 'MontserratAlternates',
-          fontSize: 15,
+          fontSize: 14,
+
           color: Theme.of(context).colorScheme.secondaryFixed,
         ),
       ),

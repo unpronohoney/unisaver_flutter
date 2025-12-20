@@ -12,16 +12,28 @@ class AppLocalizationsTr extends AppLocalizations {
   String get main_welcome => 'Hoşgeldiniz';
 
   @override
-  String get main_btns1 => 'Manuel Agno Hesabı';
+  String get main_btns1 => 'Manuel';
 
   @override
-  String get main_btns2 => 'Kombinasyonlu Agno Hesabı';
+  String get main_btns2 => 'Kombinasyonlu';
 
   @override
-  String get main_btns3 => 'Transkript ile Agno Hesabı';
+  String get main_btns3 => 'Transkript ile';
 
   @override
-  String get main_head1 => 'Lütfen işlem seçiniz:';
+  String get manuel_desc =>
+      'Önce AGNO ve toplam kredi bilgilerini ver.\nSonra derslerini eski ve yeni not bilgileriyle gir.\nUniSaver AGNO\'yu her aşamada hesaplasın.';
+
+  @override
+  String get combination_desc =>
+      'Önce, AGNO ve toplam kredi;\nSonra istediğin dersleri eski notlarıyla gir.\nDersleri zorluklarına göre sırala.\nToplam kombinasyon sayısını kısıtlar ile azalt.\nSonuçları görüntüle.';
+
+  @override
+  String get transcript_desc =>
+      'E-Devlet transkriptini seç.\nBirazcık bekle.\nVe, UniSaver tüm transkripti taradı ve derslerini tablo haline getirdi.\nBütün değişiklikleri bu tablo ile yapabilirsin.';
+
+  @override
+  String get main_head1 => 'AGNO\'nu şununla hesapla:';
 
   @override
   String get main_head2 => 'Gizlilik Politikası';
