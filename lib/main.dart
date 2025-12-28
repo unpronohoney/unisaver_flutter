@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:unisaver_flutter/database/grade_system_manager.dart';
+import 'package:unisaver_flutter/database/local_database_helper.dart';
 import 'package:unisaver_flutter/screens/combination_calculation/combination_calculation.dart';
 import 'package:unisaver_flutter/screens/combination_calculation/combination_courses.dart';
 import 'package:unisaver_flutter/screens/combination_calculation/combination_difficulty_matrix.dart';
@@ -13,15 +14,17 @@ import 'package:unisaver_flutter/screens/contact_us.dart';
 import 'package:unisaver_flutter/screens/customize_letters/create_edit_array.dart';
 import 'package:unisaver_flutter/screens/customize_letters/letter_arrays.dart';
 import 'package:unisaver_flutter/screens/info_page.dart';
+import 'package:unisaver_flutter/screens/main_screen.dart';
 import 'package:unisaver_flutter/screens/manuel_calculation/manuel_calculation.dart';
 import 'package:unisaver_flutter/screens/manuel_calculation/manuel_step2.dart';
 import 'package:unisaver_flutter/screens/splash_screen.dart';
 import 'package:unisaver_flutter/screens/transcript/select_transcript.dart';
 import 'package:unisaver_flutter/screens/transcript/transcript_table.dart';
+import 'package:unisaver_flutter/screens/user_type_screen.dart';
 import 'package:unisaver_flutter/system/lecture_cubit.dart';
 import 'package:unisaver_flutter/system/transcript_reader.dart';
 import 'package:unisaver_flutter/utils/app_theme.dart';
-import 'package:unisaver_flutter/utils/language_firebase.dart';
+import 'package:unisaver_flutter/utils/internet_gate.dart';
 import 'package:unisaver_flutter/utils/language_provider.dart';
 import 'package:unisaver_flutter/utils/theme_controller.dart';
 import 'l10n/app_localizations.dart';
@@ -34,7 +37,6 @@ import 'package:provider/provider.dart';
 //   WidgetsFlutterBinding.ensureInitialized();
 //   await Firebase.initializeApp();
 // }
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
@@ -43,21 +45,15 @@ void main() async {
   await Firebase.initializeApp();
   // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   await MobileAds.instance.initialize();
-  await initLanguageSubscription();
+  await LocalStorageService.init();
   runApp(
     MultiBlocProvider(
       providers: [BlocProvider(create: (_) => LectureCubit())],
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => TranscriptReader()),
-          ChangeNotifierProvider(
-            create: (_) => LanguageProvider(),
-            child: const MyApp(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => ThemeController(),
-            child: const MyApp(),
-          ),
+          ChangeNotifierProvider(create: (_) => LanguageProvider()),
+          ChangeNotifierProvider(create: (_) => ThemeController()),
         ],
         child: const MyApp(),
       ),
@@ -87,8 +83,9 @@ class MyApp extends StatelessWidget {
           ],
           locale: lang.locale,
           supportedLocales: const [Locale('en'), Locale('tr')],
-          home: const SplashScreen(),
+          home: InternetGate(child: const SplashScreen()),
           routes: {
+            '/home': (context) => MainScreen(),
             '/manuel': (context) => ManuelCalcPage(),
             '/manuel/courses': (context) => ManuelStep2(),
             '/combination': (context) => CombinationCalcPage(),
@@ -105,6 +102,7 @@ class MyApp extends StatelessWidget {
             '/letters/show': (context) => CreateEditArray(),
             '/contact': (context) => ContactUs(),
             '/info': (context) => InfoPage(),
+            '/user_type': (context) => UserTypeScreen(),
             //...
           },
           localeResolutionCallback: (deviceLocale, supportedLocales) {

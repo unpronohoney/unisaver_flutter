@@ -28,6 +28,7 @@ class StateMainPageButton extends State<MainPageButton> {
               ? Icons.account_tree_outlined
               : Icons.document_scanner_outlined
         : Icons.calculate_outlined;
+    final orientation = MediaQuery.of(context).orientation;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16),
@@ -35,6 +36,7 @@ class StateMainPageButton extends State<MainPageButton> {
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeOutBack,
         child: AnimatedSwitcher(
+          key: ValueKey(orientation),
           duration: const Duration(microseconds: 2000),
           transitionBuilder: (Widget child, Animation<double> animation) {
             return FadeTransition(
@@ -115,9 +117,11 @@ class StateMainPageButton extends State<MainPageButton> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.primary.withValues(alpha: 0.1),
+                              color:
+                                  Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? AppColors.whiteish.withValues(alpha: 0.5)
+                                  : AppColors.niceBlack.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: SizedBox(
@@ -186,21 +190,17 @@ class StateMainPageButton extends State<MainPageButton> {
               : Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.niceBlack.withValues(alpha: 0.5),
-                            blurRadius: 12,
-                            offset: const Offset(0, 6),
-                          ),
-                        ],
-                      ),
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minWidth: 0,
-                          maxWidth: 100.w - 96,
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.niceBlack.withValues(alpha: 0.5),
+                              blurRadius: 12,
+                              offset: const Offset(0, 6),
+                            ),
+                          ],
                         ),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -271,6 +271,7 @@ class StateMainPageButton extends State<MainPageButton> {
                         ),
                       ),
                     ),
+                    const SizedBox(width: 32),
                     infoButton(context, () {
                       setState(() {
                         _show = true;

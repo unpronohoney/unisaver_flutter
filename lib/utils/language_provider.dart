@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:unisaver_flutter/database/local_database_helper.dart';
+import 'package:unisaver_flutter/utils/language_firebase.dart';
 
 class LanguageProvider extends ChangeNotifier {
   Locale? _locale; // null = sistem dili kullan
@@ -11,21 +12,19 @@ class LanguageProvider extends ChangeNotifier {
   }
 
   Future<void> _loadSavedLocale() async {
-    final prefs = await SharedPreferences.getInstance();
-    final code = prefs.getString('app_locale');
+    final code = LocalStorageService.appLocale;
 
     if (code != null) {
       _locale = Locale(code);
+      await initLanguageSubscription(code);
       notifyListeners();
     }
   }
 
   Future<void> setLocale(Locale newLocale) async {
     _locale = newLocale;
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('app_locale', newLocale.languageCode);
-
+    await LocalStorageService.setLocale(newLocale.languageCode);
+    await initLanguageSubscription(newLocale.languageCode);
     notifyListeners();
   }
 

@@ -140,6 +140,96 @@ abstract class AppLocalizations {
   /// **'Select your e-Devlet transcript.\nWait a little bit.\nAnd, UniSaver scanned whole transcript and created table with your lessons.\nYou can make every changes with this table.'**
   String get transcript_desc;
 
+  /// No description provided for @user_type_head.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello 👋\nYour GPA assistant wonders;'**
+  String get user_type_head;
+
+  /// No description provided for @user_type_question.
+  ///
+  /// In en, this message translates to:
+  /// **'Which word best describes you in terms of average and score?'**
+  String get user_type_question;
+
+  /// No description provided for @description_question.
+  ///
+  /// In en, this message translates to:
+  /// **'I need this information to measure the performance of different types of computations. 😇'**
+  String get description_question;
+
+  /// No description provided for @curious.
+  ///
+  /// In en, this message translates to:
+  /// **'Curious'**
+  String get curious;
+
+  /// No description provided for @careful.
+  ///
+  /// In en, this message translates to:
+  /// **'Careful'**
+  String get careful;
+
+  /// No description provided for @decisive.
+  ///
+  /// In en, this message translates to:
+  /// **'Decisive'**
+  String get decisive;
+
+  /// No description provided for @curious_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Instead of playing out the scenarios in your head, you can find out how they all end with me.'**
+  String get curious_desc;
+
+  /// No description provided for @careful_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'You can obtain your E-Devlet transcript and perform calculations using all your courses.'**
+  String get careful_desc;
+
+  /// No description provided for @decisive_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'If you stick to traditional methods, you can easily calculate it with me.'**
+  String get decisive_desc;
+
+  /// No description provided for @recommend_manual.
+  ///
+  /// In en, this message translates to:
+  /// **'If you prefer clear and decisive results'**
+  String get recommend_manual;
+
+  /// No description provided for @recommend_comb.
+  ///
+  /// In en, this message translates to:
+  /// **'If you\'re curious to explore every possibility'**
+  String get recommend_comb;
+
+  /// No description provided for @recommend_trans.
+  ///
+  /// In en, this message translates to:
+  /// **'If you want a thorough calculation of all your courses'**
+  String get recommend_trans;
+
+  /// No description provided for @required_net.
+  ///
+  /// In en, this message translates to:
+  /// **'Internet connection required'**
+  String get required_net;
+
+  /// No description provided for @net_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'You need an internet connection to use UniSaver.'**
+  String get net_desc;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
   /// No description provided for @main_head1.
   ///
   /// In en, this message translates to:

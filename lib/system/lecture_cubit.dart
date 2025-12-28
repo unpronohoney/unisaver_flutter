@@ -17,6 +17,10 @@ class LectureCubit extends Cubit<LectureState> {
     return success;
   }
 
+  void syncFromTerm() {
+    emit(state.copyWith(lectures: List.from(Term.instance.lectures)));
+  }
+
   /// Silme
   void deleteLecture(Lecture lecture) {
     Term.instance.deleteLecture(lecture);

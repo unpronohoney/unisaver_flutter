@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:unisaver_flutter/database/local_database_helper.dart';
 import 'package:unisaver_flutter/utils/app_theme.dart';
 
 class ThemeController extends ChangeNotifier {
-  static const _key = 'app_theme';
-
   AppTheme _theme = AppTheme.light;
   AppTheme get theme => _theme;
 
@@ -15,9 +13,8 @@ class ThemeController extends ChangeNotifier {
     _loadTheme();
   }
 
-  Future<void> _loadTheme() async {
-    final prefs = await SharedPreferences.getInstance();
-    final savedTheme = prefs.getString(_key);
+  void _loadTheme() {
+    final savedTheme = LocalStorageService.appTheme;
 
     if (savedTheme == 'dark') {
       _theme = AppTheme.dark;
@@ -29,10 +26,9 @@ class ThemeController extends ChangeNotifier {
 
   Future<void> toggleTheme() async {
     _theme = _theme == AppTheme.dark ? AppTheme.light : AppTheme.dark;
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_key, _theme == AppTheme.dark ? 'dark' : 'light');
-
+    await LocalStorageService.setTheme(
+      _theme == AppTheme.dark ? 'dark' : 'ligth',
+    );
     notifyListeners();
   }
 }

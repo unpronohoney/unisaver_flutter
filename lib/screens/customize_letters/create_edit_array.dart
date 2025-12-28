@@ -73,7 +73,7 @@ class _StateCreateEditArray extends State<CreateEditArray> {
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Stack(
         children: [
-          BlobBackground3(),
+          const BlobBackground3(),
           SafeArea(
             child: Column(
               children: [

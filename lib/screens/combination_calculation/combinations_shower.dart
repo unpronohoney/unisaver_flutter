@@ -88,7 +88,7 @@ class _CombinationsShowerState extends State<CombinationsShower> {
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Stack(
         children: [
-          BlobBackground6(),
+          const BlobBackground6(),
           SafeArea(
             child: Column(
               children: [

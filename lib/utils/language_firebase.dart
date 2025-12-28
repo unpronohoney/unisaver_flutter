@@ -1,22 +1,16 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:unisaver_flutter/database/local_database_helper.dart';
 
-Future<void> initLanguageSubscription() async {
-  final prefs = await SharedPreferences.getInstance();
+Future<void> initLanguageSubscription(String lang) async {
+  final subscribedLang = LocalStorageService.subscribedLang;
 
-  final alreadySubscribed = prefs.getBool('lang_subscribed') ?? false;
-  if (alreadySubscribed) return;
-
-  final lang = PlatformDispatcher.instance.locale.languageCode;
-
-  if (lang == 'tr') {
+  if (subscribedLang != null && subscribedLang != lang && lang == 'tr') {
     await FirebaseMessaging.instance.subscribeToTopic('all_tr');
     await FirebaseMessaging.instance.unsubscribeFromTopic('all_en');
-  } else {
+    LocalStorageService.subscribeLanguage('tr');
+  } else if (subscribedLang != lang) {
     await FirebaseMessaging.instance.subscribeToTopic('all_en');
     await FirebaseMessaging.instance.unsubscribeFromTopic('all_tr');
+    LocalStorageService.subscribeLanguage('en');
   }
-
-  await prefs.setBool('lang_subscribed', true);
 }

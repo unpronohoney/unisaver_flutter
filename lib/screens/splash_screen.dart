@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:unisaver_flutter/screens/main_screen.dart';
+import 'package:unisaver_flutter/database/local_database_helper.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,19 +14,23 @@ class SplashScreen extends StatefulWidget {
 class _StateSplashScreen extends State<SplashScreen> {
   startTimer() {
     Duration duration = Duration(seconds: 3);
-    return Timer(duration, goMain);
-  }
-
-  void goMain() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const MainScreen()),
-    );
+    return Timer(duration, _navigate);
   }
 
   @override
   void initState() {
     super.initState();
     startTimer();
+  }
+
+  _navigate() {
+    bool isFirst = LocalStorageService.isFirstRun;
+    if (!mounted) return;
+    if (isFirst) {
+      Navigator.pushNamed(context, '/user_type');
+    } else {
+      Navigator.pushNamed(context, '/home');
+    }
   }
 
   @override

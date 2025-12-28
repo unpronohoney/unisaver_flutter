@@ -4,10 +4,12 @@ import 'package:unisaver_flutter/constants/admob_ids.dart';
 import 'package:unisaver_flutter/constants/alerts.dart';
 import 'package:unisaver_flutter/constants/background2.dart';
 import 'package:unisaver_flutter/database/grade_system_manager.dart';
+import 'package:unisaver_flutter/database/term_savers.dart';
 import 'package:unisaver_flutter/system/grade_point_average.dart';
 import 'package:unisaver_flutter/system/letter_array.dart';
 import 'package:unisaver_flutter/system/term.dart';
 import 'package:unisaver_flutter/utils/loc.dart';
+import 'package:unisaver_flutter/widgets/loading.dart';
 import 'package:unisaver_flutter/widgets/textfields/modern_text_field.dart';
 import 'package:unisaver_flutter/widgets/buttons/purple_button.dart';
 import 'package:unisaver_flutter/widgets/texts/head_text.dart';
@@ -24,18 +26,15 @@ class _ManuelHesapPageState extends State<ManuelCalcPage> {
   final _gpaController = TextEditingController();
   final _credController = TextEditingController();
   bool _isBannerLoaded = false;
+  bool _isLoading = false;
+  bool _isTermLocal = false;
 
   late BannerAd _banner;
 
   @override
   void initState() {
     super.initState();
-    _gpaController.text = Term.instance.oldgpa == 0
-        ? ''
-        : Term.instance.oldgpa.toString();
-    _credController.text = Term.instance.oldcred == 0
-        ? ''
-        : Term.instance.oldcred.toString();
+
     _banner = BannerAd(
       adUnitId: AdMobIds.manuelBanner,
       size: AdSize.banner,
@@ -50,6 +49,23 @@ class _ManuelHesapPageState extends State<ManuelCalcPage> {
       ),
     )..load();
     GradeSystemManager.initLetterArray();
+    initManuel();
+  }
+
+  void initManuel() async {
+    setState(() {
+      _isLoading = true;
+    });
+    _isTermLocal = await readSemesterForManuel();
+    _gpaController.text = Term.instance.oldgpa == 0
+        ? ''
+        : Term.instance.oldgpa.toString();
+    _credController.text = Term.instance.oldcred == 0
+        ? ''
+        : Term.instance.oldcred.toString();
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -66,7 +82,7 @@ class _ManuelHesapPageState extends State<ManuelCalcPage> {
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Stack(
         children: [
-          BlobBackground2(),
+          const BlobBackground2(),
           SafeArea(
             child: Column(
               children: [
@@ -101,6 +117,10 @@ class _ManuelHesapPageState extends State<ManuelCalcPage> {
                         PurpleButton(
                           text: t(context).butPassAdding,
                           onPressed: () {
+                            if (_isTermLocal) {
+                              Navigator.pushNamed(context, '/manuel/courses');
+                              return;
+                            }
                             if (_gpaController.text.isNotEmpty &&
                                 double.tryParse(
                                       _gpaController.text.replaceAll(',', '.'),
@@ -150,6 +170,7 @@ class _ManuelHesapPageState extends State<ManuelCalcPage> {
               ],
             ),
           ),
+          if (_isLoading) Loading(),
         ],
       ),
     );

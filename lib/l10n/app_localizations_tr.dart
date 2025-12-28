@@ -33,6 +33,58 @@ class AppLocalizationsTr extends AppLocalizations {
       'E-Devlet transkriptini seç.\nBirazcık bekle.\nVe, UniSaver tüm transkripti taradı ve derslerini tablo haline getirdi.\nBütün değişiklikleri bu tablo ile yapabilirsin.';
 
   @override
+  String get user_type_head => 'Selam 👋\nAGNO asistanın merak ediyor;';
+
+  @override
+  String get user_type_question =>
+      'Ortalama ve puan konusunda hangi sıfat seni en iyi tanımlar?';
+
+  @override
+  String get description_question =>
+      'Bu bilgiyi hesaplama türlerinin performansını ölçmek için istiyorum. 😇';
+
+  @override
+  String get curious => 'Meraklı';
+
+  @override
+  String get careful => 'Titiz';
+
+  @override
+  String get decisive => 'Kararlı';
+
+  @override
+  String get curious_desc =>
+      'Senaryoları aklında oynamak yerine benimle hepsinin sonunu öğrenebilirsin.';
+
+  @override
+  String get careful_desc =>
+      'E-Devlet transkriptini alıp tüm derslerin ile hesaplama yapabilirsin.';
+
+  @override
+  String get decisive_desc =>
+      'Klasik yöntemlerden şaşmıyorsan benimle kolayca hesaplayabilirsin.';
+
+  @override
+  String get recommend_manual => 'Kesin sonuçlar için kararlıysan';
+
+  @override
+  String get recommend_comb => 'Tüm ihtimalleri keşfetmeye meraklıysan';
+
+  @override
+  String get recommend_trans =>
+      'Tüm derslerini titizlikle hesaplamak istiyorsan';
+
+  @override
+  String get required_net => 'İnternet bağlantısı gerekli';
+
+  @override
+  String get net_desc =>
+      'UniSaver’ı kullanabilmek için internet bağlantısı gereklidir.';
+
+  @override
+  String get retry => 'Tekrar Dene';
+
+  @override
   String get main_head1 => 'AGNO\'nu şununla hesapla:';
 
   @override

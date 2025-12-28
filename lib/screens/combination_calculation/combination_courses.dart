@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:unisaver_flutter/constants/admob_ids.dart';
 import 'package:unisaver_flutter/constants/background3.dart';
 import 'package:unisaver_flutter/constants/list_constants.dart';
+import 'package:unisaver_flutter/database/term_savers.dart';
 import 'package:unisaver_flutter/system/lecture.dart';
 import 'package:unisaver_flutter/system/lecture_cubit.dart';
 import 'package:unisaver_flutter/widgets/buttons/list_edit_button.dart';
@@ -27,7 +29,8 @@ class CombinationCourses extends StatefulWidget {
   State<StatefulWidget> createState() => CombinationCoursesState();
 }
 
-class CombinationCoursesState extends State<CombinationCourses> {
+class CombinationCoursesState extends State<CombinationCourses>
+    with WidgetsBindingObserver {
   final TextEditingController _courseNameController = TextEditingController();
   final TextEditingController _courseCredController = TextEditingController();
 
@@ -40,9 +43,28 @@ class CombinationCoursesState extends State<CombinationCourses> {
 
   ValueNotifier<int> coursecounter = ValueNotifier<int>(0);
 
+  Timer? _saveTimer;
+
+  void scheduleSave() async {
+    _saveTimer?.cancel();
+    _saveTimer = Timer(const Duration(seconds: 5), () async {
+      await saveSemesterToLocalForCombination();
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
+      await saveSemesterToLocalForManuel();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
     _banner = BannerAd(
       adUnitId: AdMobIds.combinationBanner,
       size: AdSize.banner,
@@ -60,6 +82,9 @@ class CombinationCoursesState extends State<CombinationCourses> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
+    _saveTimer?.cancel();
     _banner.dispose();
     coursecounter.dispose();
     oldLetterNotifier.dispose();
@@ -77,11 +102,12 @@ class CombinationCoursesState extends State<CombinationCourses> {
       Term.instance.oldcred,
       ((Term.instance.oldgpa * 100).round() / 100),
     );
+    context.read<LectureCubit>().syncFromTerm();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Stack(
         children: [
-          BlobBackground3(),
+          const BlobBackground3(),
           SafeArea(
             child: Column(
               children: [
@@ -90,6 +116,7 @@ class CombinationCoursesState extends State<CombinationCourses> {
                   onHomePressed: () {
                     context.read<LectureCubit>().clearLectures();
                     coursecounter.value = 0;
+                    _saveTimer?.cancel();
                     Navigator.pop(context);
                   },
                   onRefreshPressed: () {
@@ -209,13 +236,16 @@ class CombinationCoursesState extends State<CombinationCourses> {
                                           coursecounter.value++;
                                         }
                                       }
+                                      scheduleSave();
                                     },
                                   ),
                                   const SizedBox(width: 12),
                                   PurpleButton(
                                     text: t(context).ok,
-                                    onPressed: () {
-                                      if (Term.instance.lectures.isNotEmpty) {
+                                    onPressed: () async {
+                                      await saveSemesterToLocalForCombination();
+                                      if (Term.instance.lectures.isNotEmpty &&
+                                          context.mounted) {
                                         Navigator.pushNamed(
                                           context,
                                           '/combination/courses/difficulties',
@@ -273,6 +303,7 @@ class CombinationCoursesState extends State<CombinationCourses> {
                                           .read<LectureCubit>()
                                           .deleteLectureForCombination(lec);
                                       coursecounter.value--;
+                                      scheduleSave();
                                     },
                                     child: Container(
                                       decoration: listCardDecoration(context),
@@ -302,7 +333,9 @@ class CombinationCoursesState extends State<CombinationCourses> {
                                               LetterArray.letters,
                                               null,
                                               0,
-                                              () {},
+                                              () {
+                                                scheduleSave();
+                                              },
                                             );
                                           },
                                         ),

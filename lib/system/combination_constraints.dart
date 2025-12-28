@@ -5,7 +5,7 @@ import 'package:unisaver_flutter/system/lecture.dart';
 class CombinationConstraints {
   static List<List<int>> findAllCombinations(
     List<Lecture> sortedLectures,
-    Map<Lecture, int> diffs,
+    Map<String, int> diffs,
     List<String> letters,
   ) {
     List<List<int>> combinations = [];
@@ -16,7 +16,7 @@ class CombinationConstraints {
     //dev.log("${diffs.length}", name: "comb_calc");
     final List<int> lectureDiffs = [];
     for (Lecture l in sortedLectures) {
-      lectureDiffs.add(diffs[l]!);
+      lectureDiffs.add(diffs[l.id]!);
     }
     //dev.log("${sortedLectures.length}", name: "comb_calc");
     int size = sortedLectures.length;
@@ -265,7 +265,7 @@ class ApplyConstraintsPayload {
 
 class FindAllCombinationsPayload {
   final List<Lecture> sortedLectures;
-  final Map<Lecture, int> difficulties;
+  final Map<String, int> difficulties;
   final List<String> letters;
 
   FindAllCombinationsPayload({

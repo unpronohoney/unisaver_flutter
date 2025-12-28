@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:unisaver_flutter/constants/admob_ids.dart';
 import 'package:unisaver_flutter/constants/background4.dart';
+import 'package:unisaver_flutter/database/term_savers.dart';
 import 'package:unisaver_flutter/system/term.dart';
 import 'package:unisaver_flutter/utils/loc.dart';
+import 'package:unisaver_flutter/utils/usage_tracker.dart';
 import 'package:unisaver_flutter/widgets/difficulty_matrix.dart';
 import 'package:unisaver_flutter/widgets/dialogs/info_and_bottom_sheet.dart';
 import 'package:unisaver_flutter/widgets/buttons/purple_button.dart';
@@ -17,14 +21,32 @@ class CombinationDifficultyMatrix extends StatefulWidget {
 }
 
 class CombinationDifficultyMatrixState
-    extends State<CombinationDifficultyMatrix> {
+    extends State<CombinationDifficultyMatrix>
+    with WidgetsBindingObserver {
   late BannerAd _banner;
   bool _isBannerLoaded = false;
+
+  Timer? _saveTimer;
+
+  void scheduleSave() async {
+    _saveTimer?.cancel();
+    _saveTimer = Timer(const Duration(seconds: 5), () async {
+      await saveSemesterToLocalForCombination();
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
+      await saveSemesterToLocalForManuel();
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    Term.instance.initializeDifficulties();
+    WidgetsBinding.instance.addObserver(this);
     _banner = BannerAd(
       adUnitId: AdMobIds.combinationBanner,
       size: AdSize.banner,
@@ -38,27 +60,34 @@ class CombinationDifficultyMatrixState
         },
       ),
     )..load();
+    UsageTracker.combination();
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _saveTimer?.cancel();
     _banner.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (Term.instance.lectures.length != Term.instance.difficulties.length) {
+      Term.instance.initializeDifficulties();
+    }
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Stack(
         children: [
-          BlobBackground4(),
+          const BlobBackground4(),
           SafeArea(
             child: Column(
               children: [
                 UnisaverUpsideBar(
                   icon: Icons.arrow_back_ios_new_sharp,
                   onHomePressed: () {
+                    _saveTimer?.cancel();
                     Navigator.pop(context);
                   },
                   onRefreshPressed: () {
@@ -125,11 +154,14 @@ class CombinationDifficultyMatrixState
                                   }),
                                   PurpleButton(
                                     text: t(context).ok,
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        '/combination/courses/constraints',
-                                      );
+                                    onPressed: () async {
+                                      await saveSemesterToLocalForCombination();
+                                      if (context.mounted) {
+                                        Navigator.pushNamed(
+                                          context,
+                                          '/combination/courses/constraints',
+                                        );
+                                      }
                                     },
                                   ),
                                 ],
@@ -139,7 +171,7 @@ class CombinationDifficultyMatrixState
                         ),
 
                         SizedBox(height: 8),
-                        DifficultyMatrix(),
+                        DifficultyMatrix(draggedAction: scheduleSave),
                       ],
                     ),
                   ),

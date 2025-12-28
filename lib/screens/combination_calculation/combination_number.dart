@@ -91,9 +91,11 @@ class CombinationNumberState extends State<CombinationNumber> {
     sortedLectures.clear();
 
     for (int lvl in levelOrder) {
-      for (Lecture l in Term.instance.difficulties.keys) {
-        if (Term.instance.difficulties[l] == lvl) {
-          sortedLectures.add(l);
+      for (String id in Term.instance.difficulties.keys) {
+        if (Term.instance.difficulties[id] == lvl) {
+          sortedLectures.add(
+            Term.instance.lectures.where((l) => (l.id == id)).first,
+          );
         }
       }
     }
@@ -272,7 +274,7 @@ class CombinationNumberState extends State<CombinationNumber> {
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Stack(
         children: [
-          BlobBackground5(),
+          const BlobBackground5(),
           SafeArea(
             child: Column(
               children: [

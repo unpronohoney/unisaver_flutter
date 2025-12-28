@@ -8,6 +8,24 @@
   "combination_desc": "Önce, AGNO ve toplam kredi;\nSonra istediğin dersleri eski notlarıyla gir.\nDersleri zorluklarına göre sırala.\nToplam kombinasyon sayısını kısıtlar ile azalt.\nSonuçları görüntüle.",
   "transcript_desc": "E-Devlet transkriptini seç.\nBirazcık bekle.\nVe, UniSaver tüm transkripti taradı ve derslerini tablo haline getirdi.\nBütün değişiklikleri bu tablo ile yapabilirsin.",
 
+  "user_type_head": "Selam 👋\nAGNO asistanın merak ediyor;",
+  "user_type_question": "Ortalama ve puan konusunda hangi sıfat seni en iyi tanımlar?",
+  "description_question": "Bu bilgiyi hesaplama türlerinin performansını ölçmek için istiyorum. 😇",
+  "curious": "Meraklı",
+  "careful": "Titiz",
+  "decisive": "Kararlı",
+  "curious_desc": "Senaryoları aklında oynamak yerine benimle hepsinin sonunu öğrenebilirsin.",
+  "careful_desc": "E-Devlet transkriptini alıp tüm derslerin ile hesaplama yapabilirsin.",
+  "decisive_desc": "Klasik yöntemlerden şaşmıyorsan benimle kolayca hesaplayabilirsin.",
+
+  "recommend_manual": "Kesin sonuçlar için kararlıysan",
+  "recommend_comb": "Tüm ihtimalleri keşfetmeye meraklıysan",
+  "recommend_trans": "Tüm derslerini titizlikle hesaplamak istiyorsan",
+
+  "required_net": "İnternet bağlantısı gerekli",
+  "net_desc": "UniSaver’ı kullanabilmek için internet bağlantısı gereklidir.",
+  "retry": "Tekrar Dene",
+
   "main_head1": "AGNO'nu şununla hesapla:",
   "main_head2": "Gizlilik Politikası",
   "main_head3": "Geri Bildirim Silme Talebi",

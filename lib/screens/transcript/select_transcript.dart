@@ -182,7 +182,7 @@ class _SelectTranscriptState extends State<SelectTranscript> {
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Stack(
         children: [
-          BlobBackground2(),
+          const BlobBackground2(),
           SafeArea(
             child: Column(
               children: [

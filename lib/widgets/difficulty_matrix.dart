@@ -5,7 +5,8 @@ import 'package:unisaver_flutter/system/term.dart';
 import 'package:unisaver_flutter/utils/loc.dart';
 
 class DifficultyMatrix extends StatefulWidget {
-  const DifficultyMatrix({super.key});
+  final VoidCallback draggedAction;
+  const DifficultyMatrix({super.key, required this.draggedAction});
 
   @override
   State<DifficultyMatrix> createState() => _DifficultyMatrixState();
@@ -55,8 +56,9 @@ class _DifficultyMatrixState extends State<DifficultyMatrix> {
           onAcceptWithDetails: (details) {
             final lec = details.data;
             setState(() {
-              Term.instance.difficulties[lec] = level;
+              Term.instance.difficulties[lec.id] = level;
             });
+            widget.draggedAction();
           },
           builder: (context, candidateData, rejectedData) {
             return Container(
@@ -84,7 +86,7 @@ class _DifficultyMatrixState extends State<DifficultyMatrix> {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: Term.instance.lectures
-                    .where((l) => Term.instance.difficulties[l] == level)
+                    .where((l) => Term.instance.difficulties[l.id] == level)
                     .map((l) => draggableLessonBox(l, level))
                     .toList(),
               ),
@@ -98,7 +100,7 @@ class _DifficultyMatrixState extends State<DifficultyMatrix> {
   }
 
   Widget draggableLessonBox(Lecture lesson, int lvl) {
-    return LongPressDraggable<Lecture>(
+    return Draggable<Lecture>(
       data: lesson,
       feedback: Material(
         color: Colors.transparent,

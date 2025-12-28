@@ -8,7 +8,7 @@ class Term {
   int oldcred;
   GradePointAverage gpa;
   List<Lecture> lectures = [];
-  Map<Lecture, int> difficulties = {};
+  Map<String, int> difficulties = {};
   List<List<int>> combinations = [];
   Map<double, List<int>> combsGroupedByGpas = {};
   List<Lecture> sortedLectures = [];
@@ -19,6 +19,15 @@ class Term {
     required this.oldgpa,
     required this.oldcred,
   });
+
+  void setDifficulties(Map<String, int> data) {
+    for (String id in data.keys) {
+      var lect = lectures.where((l) => l.id == id).firstOrNull;
+      if (lect != null) {
+        difficulties[lect.id] = data[id]!;
+      }
+    }
+  }
 
   // Static getter for singleton instance
   static Term get instance {
@@ -31,7 +40,7 @@ class Term {
   }
 
   void initializeDifficulties() {
-    difficulties = {for (var l in lectures) l: 0};
+    difficulties = {for (var l in lectures) l.id: 0};
   }
 
   // Initialize method to set up the Term with initial GPA

@@ -1,14 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:unisaver_flutter/constants/admob_ids.dart';
 import 'package:unisaver_flutter/constants/background3.dart';
 import 'package:unisaver_flutter/constants/list_constants.dart';
+import 'package:unisaver_flutter/database/term_savers.dart';
 import 'package:unisaver_flutter/system/lecture.dart';
 import 'package:unisaver_flutter/system/lecture_cubit.dart';
 import 'package:unisaver_flutter/system/letter_array.dart';
 import 'package:unisaver_flutter/system/term.dart';
 import 'package:unisaver_flutter/utils/loc.dart';
+import 'package:unisaver_flutter/utils/usage_tracker.dart';
 import 'package:unisaver_flutter/widgets/buttons/list_edit_button.dart';
 import 'package:unisaver_flutter/widgets/drop_down_spinner.dart';
 import 'package:unisaver_flutter/widgets/scaffold_message.dart';
@@ -29,7 +33,7 @@ class ManuelStep2 extends StatefulWidget {
   State<ManuelStep2> createState() => ManuelStepState();
 }
 
-class ManuelStepState extends State<ManuelStep2> {
+class ManuelStepState extends State<ManuelStep2> with WidgetsBindingObserver {
   final _courseNameController = TextEditingController();
   final _courseCredController = TextEditingController();
   double gpa = Term.instance.oldgpa;
@@ -43,9 +47,27 @@ class ManuelStepState extends State<ManuelStep2> {
   ValueNotifier<bool> isNameOkey = ValueNotifier(false);
   ValueNotifier<bool> isCredOkey = ValueNotifier(false);
 
+  Timer? _saveTimer;
+
+  void scheduleSave() {
+    _saveTimer?.cancel();
+    _saveTimer = Timer(const Duration(seconds: 5), () async {
+      await saveSemesterToLocalForManuel();
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
+      await saveSemesterToLocalForManuel();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _banner = BannerAd(
       adUnitId: AdMobIds.manuelBanner,
       size: AdSize.banner,
@@ -59,10 +81,13 @@ class ManuelStepState extends State<ManuelStep2> {
         },
       ),
     )..load();
+    UsageTracker.manual();
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _saveTimer?.cancel();
     oldLetterNotifier.dispose();
     newLetterNotifier.dispose();
     gpaNotifier.dispose();
@@ -82,12 +107,19 @@ class ManuelStepState extends State<ManuelStep2> {
       Term.instance.oldcred,
       ((Term.instance.oldgpa * 100).round() / 100),
     );
+    context.read<LectureCubit>().syncFromTerm();
+
+    if (Term.instance.lectures.isNotEmpty) {
+      gpaNotifier.value =
+          '${t(context).gpa_column}: ${(Term.instance.gpa.currentGPA * 100).round() / 100}';
+      credNotifier.value = t(context).credits(Term.instance.gpa.totCred);
+    }
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Stack(
         children: [
-          BlobBackground3(),
+          const BlobBackground3(),
           SafeArea(
             child: Column(
               children: [
@@ -95,6 +127,7 @@ class ManuelStepState extends State<ManuelStep2> {
                   icon: Icons.arrow_back_ios_new_sharp,
                   onHomePressed: () {
                     context.read<LectureCubit>().clearLectures();
+                    _saveTimer?.cancel();
                     Navigator.pop(context);
                   },
                   onRefreshPressed: () {
@@ -227,8 +260,7 @@ class ManuelStepState extends State<ManuelStep2> {
                                       context,
                                     ).credits(Term.instance.gpa.totCred);
                                   }
-
-                                  // Form alanlarını temizle
+                                  scheduleSave();
                                 },
                               ),
                               const SizedBox(height: 16),
@@ -326,6 +358,7 @@ class ManuelStepState extends State<ManuelStep2> {
                                           context,
                                         ).credits(Term.instance.gpa.totCred);
                                       }
+                                      scheduleSave();
                                     },
                                     child: Container(
                                       decoration: listCardDecoration(context),
@@ -364,6 +397,7 @@ class ManuelStepState extends State<ManuelStep2> {
                                                     .credits(
                                                       Term.instance.gpa.totCred,
                                                     );
+                                                scheduleSave();
                                               },
                                             );
                                           },

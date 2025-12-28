@@ -4,16 +4,16 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:unisaver_flutter/constants/alerts.dart';
+import 'package:unisaver_flutter/database/local_database_helper.dart';
 import 'package:unisaver_flutter/l10n/app_localizations.dart';
-import 'package:unisaver_flutter/utils/language_firebase.dart';
 import 'package:unisaver_flutter/utils/language_provider.dart';
 import 'package:unisaver_flutter/utils/theme_controller.dart';
 import 'package:unisaver_flutter/widgets/buttons/main_page_button.dart';
 import 'package:unisaver_flutter/widgets/buttons/purple_button.dart';
-import 'package:unisaver_flutter/widgets/dialogs/info_and_bottom_sheet.dart';
+import 'package:unisaver_flutter/widgets/dialogs/recommend_button_wrapper.dart';
+import 'package:unisaver_flutter/widgets/texts/list_texts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../constants/colors.dart';
 import 'package:unisaver_flutter/utils/loc.dart';
@@ -27,16 +27,33 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  bool _manuelInfo = false;
-  bool _combInfo = false;
-  bool _transInfo = false;
-
+  String? type = LocalStorageService.userType;
+  final shown = LocalStorageService.shownUserSuggestion;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       bildirimIzniIste();
     });
+    if (!LocalStorageService.shownUserSuggestion) {
+      Future.delayed(const Duration(seconds: 2), () {
+        LocalStorageService.setShownUserSuggestion();
+        setState(() {});
+      });
+    }
+  }
+
+  int getRecommendedFunction(String userType) {
+    switch (userType) {
+      case "decisive":
+        return 1; // Manuel
+      case "curious":
+        return 2; // Kombinasyon
+      case "careful":
+        return 3; // Transkript
+      default:
+        return 0;
+    }
   }
 
   Future<void> bildirimIzniIste() async {
@@ -105,6 +122,9 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final recommended = getRecommendedFunction(type ?? "");
+    final showCursor =
+        !LocalStorageService.shownUserSuggestion && recommended != 0;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Stack(
@@ -126,7 +146,6 @@ class _MainScreenState extends State<MainScreen> {
                         color: Theme.of(context).colorScheme.secondaryFixed,
                       ),
                     ),
-
                     const Spacer(),
                     MenuAnchor(
                       builder: (context, controller, child) {
@@ -218,14 +237,6 @@ class _MainScreenState extends State<MainScreen> {
                                                 ? const Locale('tr')
                                                 : const Locale('en'),
                                           );
-                                          final prefs =
-                                              await SharedPreferences.getInstance();
-                                          await prefs.setBool(
-                                            'lang_subscribed',
-                                            false,
-                                          );
-
-                                          await initLanguageSubscription();
                                         },
                                       ),
                                       _glassMenuItem(
@@ -322,12 +333,33 @@ class _MainScreenState extends State<MainScreen> {
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 4.h),
+                        if (!showCursor && recommended == 1)
+                          _recommendationText(
+                            text: t(context).recommend_manual,
+                          ),
+                        RecommendedButtonWrapper(
+                          showCursor: showCursor && recommended == 1,
+                          message: t(context).recommend_manual,
+                          child: MainPageButton(function: 1),
+                        ),
 
-                        MainPageButton(function: 1),
                         SizedBox(height: 4.h),
-                        MainPageButton(function: 2),
+                        if (!showCursor && recommended == 2)
+                          _recommendationText(text: t(context).recommend_comb),
+                        RecommendedButtonWrapper(
+                          showCursor: showCursor && recommended == 2,
+                          message: t(context).recommend_comb,
+                          child: MainPageButton(function: 2),
+                        ),
+
                         SizedBox(height: 4.h),
-                        MainPageButton(function: 3),
+                        if (!showCursor && recommended == 3)
+                          _recommendationText(text: t(context).recommend_trans),
+                        RecommendedButtonWrapper(
+                          showCursor: showCursor && recommended == 3,
+                          message: t(context).recommend_trans,
+                          child: MainPageButton(function: 3),
+                        ),
                         SizedBox(height: 6.h),
                       ],
                     ),
@@ -372,7 +404,7 @@ class _MainScreenState extends State<MainScreen> {
                       _bottomText(t(context).main_head3, () async {
                         final Uri emailUri = Uri(
                           scheme: 'mailto',
-                          path: 'destek@seninsite.com',
+                          path: 'bamisamu@hotmail.com',
                         );
 
                         if (!await launchUrl(emailUri)) {
@@ -392,6 +424,21 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _recommendationText({required String text}) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 28),
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
+        ),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: listSubtitle(context, text),
     );
   }
 

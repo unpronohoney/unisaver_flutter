@@ -8,6 +8,25 @@
   "combination_desc": "First, GPA and total credits;\nThen enter lessons you want with old grades.\nList lessons by difficulties.\nReduce total combination count by constraints.\nView results.",
   "transcript_desc": "Select your e-Devlet transcript.\nWait a little bit.\nAnd, UniSaver scanned whole transcript and created table with your lessons.\nYou can make every changes with this table.",
 
+  "user_type_head": "Hello 👋\nYour GPA assistant wonders;",
+  "user_type_question": "Which word best describes you in terms of average and score?",
+  "description_question": "I need this information to measure the performance of different types of computations. 😇",
+  "curious": "Curious",
+  "careful": "Careful",
+  "decisive": "Decisive",
+
+  "curious_desc": "Instead of playing out the scenarios in your head, you can find out how they all end with me.",
+  "careful_desc": "You can obtain your E-Devlet transcript and perform calculations using all your courses.",
+  "decisive_desc": "If you stick to traditional methods, you can easily calculate it with me.",
+
+  "recommend_manual": "If you prefer clear and decisive results",
+  "recommend_comb": "If you're curious to explore every possibility",
+  "recommend_trans": "If you want a thorough calculation of all your courses",
+
+  "required_net": "Internet connection required",
+  "net_desc": "You need an internet connection to use UniSaver.",
+  "retry": "Retry",
+
   "main_head1": "Calculate your GPA:",
   "main_head2": "Privacy Policy",
   "main_head3": "Feedback Deletion Request",

@@ -47,7 +47,7 @@ class _StateInfoPage extends State<InfoPage> {
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Stack(
         children: [
-          BlobBackground2(),
+          const BlobBackground2(),
           SafeArea(
             child: Column(
               children: [

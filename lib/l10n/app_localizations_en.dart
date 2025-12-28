@@ -33,6 +33,58 @@ class AppLocalizationsEn extends AppLocalizations {
       'Select your e-Devlet transcript.\nWait a little bit.\nAnd, UniSaver scanned whole transcript and created table with your lessons.\nYou can make every changes with this table.';
 
   @override
+  String get user_type_head => 'Hello 👋\nYour GPA assistant wonders;';
+
+  @override
+  String get user_type_question =>
+      'Which word best describes you in terms of average and score?';
+
+  @override
+  String get description_question =>
+      'I need this information to measure the performance of different types of computations. 😇';
+
+  @override
+  String get curious => 'Curious';
+
+  @override
+  String get careful => 'Careful';
+
+  @override
+  String get decisive => 'Decisive';
+
+  @override
+  String get curious_desc =>
+      'Instead of playing out the scenarios in your head, you can find out how they all end with me.';
+
+  @override
+  String get careful_desc =>
+      'You can obtain your E-Devlet transcript and perform calculations using all your courses.';
+
+  @override
+  String get decisive_desc =>
+      'If you stick to traditional methods, you can easily calculate it with me.';
+
+  @override
+  String get recommend_manual => 'If you prefer clear and decisive results';
+
+  @override
+  String get recommend_comb =>
+      'If you\'re curious to explore every possibility';
+
+  @override
+  String get recommend_trans =>
+      'If you want a thorough calculation of all your courses';
+
+  @override
+  String get required_net => 'Internet connection required';
+
+  @override
+  String get net_desc => 'You need an internet connection to use UniSaver.';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
   String get main_head1 => 'Calculate your GPA:';
 
   @override
