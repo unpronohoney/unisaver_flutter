@@ -19,9 +19,16 @@
   "careful_desc": "You can obtain your E-Devlet transcript and perform calculations using all your courses.",
   "decisive_desc": "If you stick to traditional methods, you can easily calculate it with me.",
 
-  "recommend_manual": "If you prefer clear and decisive results",
-  "recommend_comb": "If you're curious to explore every possibility",
-  "recommend_trans": "If you want a thorough calculation of all your courses",
+  "recommend_manual": "To get decisive results",
+  "recommend_comb": "To explore every possibility",
+  "recommend_trans": "To perform thorough calculation",
+
+  "req_timeout": "Request Time Out",
+  "req_exp": "Something went wrong. Please try again later.",
+
+  "suggest_manual": "For decisive people",
+  "suggest_comb": "For curious people",
+  "suggest_trans": "For careful people",
 
   "required_net": "Internet connection required",
   "net_desc": "You need an internet connection to use UniSaver.",

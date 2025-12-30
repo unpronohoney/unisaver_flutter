@@ -9,12 +9,11 @@ import 'package:unisaver_flutter/constants/alerts.dart';
 import 'package:unisaver_flutter/constants/background.dart';
 import 'package:unisaver_flutter/database/local_database_helper.dart';
 import 'package:unisaver_flutter/utils/loc.dart';
-import 'package:unisaver_flutter/widgets/buttons/purple_button.dart';
 import 'package:unisaver_flutter/widgets/buttons/user_type_button.dart';
+import 'package:unisaver_flutter/widgets/dialogs/alert_template.dart';
 import 'package:unisaver_flutter/widgets/loading.dart';
 import 'package:unisaver_flutter/widgets/texts/head_text.dart';
 import 'package:unisaver_flutter/widgets/texts/list_texts.dart';
-import 'package:unisaver_flutter/widgets/texts/second_head_text.dart';
 
 class UserTypeScreen extends StatefulWidget {
   const UserTypeScreen({super.key});
@@ -25,6 +24,7 @@ class UserTypeScreen extends StatefulWidget {
 
 class UserTypeScreenState extends State<UserTypeScreen> {
   bool _loading = false;
+  bool _timeout = false;
 
   @override
   void initState() {
@@ -34,9 +34,12 @@ class UserTypeScreenState extends State<UserTypeScreen> {
   Future<void> processUserType(String type) async {
     Timer(Duration(seconds: 20), () {
       if (!mounted) return;
-      setState(() {
-        _loading = false;
-      });
+      if (_loading) {
+        setState(() {
+          _loading = false;
+          _timeout = true;
+        });
+      }
     });
 
     setState(() {
@@ -44,12 +47,7 @@ class UserTypeScreenState extends State<UserTypeScreen> {
     });
     try {
       final auth = FirebaseAuth.instance;
-      await FirebaseFirestore.instance.collection("sanity_check").doc("ok").set(
-        {"alive": true},
-      );
-
-      final firestore = FirebaseFirestore.instance;
-
+      final firestore = FirebaseFirestore.instanceFor(app: Firebase.app(), databaseId: 'users');
       if (auth.currentUser == null) {
         await auth.signInAnonymously();
 
@@ -64,13 +62,12 @@ class UserTypeScreenState extends State<UserTypeScreen> {
       }
 
       final uid = auth.currentUser!.uid;
-      LocalStorageService.setUserType(type);
+      await LocalStorageService.setUserType(type);
 
       await firestore.collection("users").doc(uid).set({
         "userType": type,
-        "updatedAt": FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
-      LocalStorageService.setFirstRun();
+      await LocalStorageService.setFirstRun();
       setState(() {
         _loading = false;
       });
@@ -144,6 +141,11 @@ class UserTypeScreenState extends State<UserTypeScreen> {
             ),
           ),
           if (_loading) Loading(),
+          if (_timeout) AlertTemplate(title: t(context).req_timeout, exp: t(context).req_exp, onDismiss: () {
+            setState(() {
+              _timeout = false;
+            });
+          },)
         ],
       ),
     );

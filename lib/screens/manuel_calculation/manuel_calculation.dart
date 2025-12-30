@@ -3,7 +3,6 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:unisaver_flutter/constants/admob_ids.dart';
 import 'package:unisaver_flutter/constants/alerts.dart';
 import 'package:unisaver_flutter/constants/background2.dart';
-import 'package:unisaver_flutter/database/grade_system_manager.dart';
 import 'package:unisaver_flutter/database/term_savers.dart';
 import 'package:unisaver_flutter/system/grade_point_average.dart';
 import 'package:unisaver_flutter/system/letter_array.dart';
@@ -48,7 +47,6 @@ class _ManuelHesapPageState extends State<ManuelCalcPage> {
         },
       ),
     )..load();
-    GradeSystemManager.initLetterArray();
     initManuel();
   }
 

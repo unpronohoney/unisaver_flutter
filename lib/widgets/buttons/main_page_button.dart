@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
 import 'package:unisaver_flutter/constants/colors.dart';
+import 'package:unisaver_flutter/database/local_database_helper.dart';
 import 'package:unisaver_flutter/utils/loc.dart';
 import 'package:unisaver_flutter/widgets/dialogs/info_and_bottom_sheet.dart';
 
 class MainPageButton extends StatefulWidget {
   final int function;
-  const MainPageButton({super.key, required this.function});
+  final VoidCallback onComeBack;
+  const MainPageButton({super.key, required this.function, required this.onComeBack});
 
   @override
   State<StatefulWidget> createState() => StateMainPageButton();
@@ -156,7 +158,9 @@ class StateMainPageButton extends State<MainPageButton> {
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(50),
                             child: InkWell(
-                              onTap: () {
+                              onTap: () async {
+                                await LocalStorageService.setShownUserSuggestion();
+                                if (!context.mounted) return;
                                 if (widget.function == 1) {
                                   Navigator.pushNamed(context, '/manuel');
                                 } else if (widget.function == 2) {
@@ -164,6 +168,7 @@ class StateMainPageButton extends State<MainPageButton> {
                                 } else {
                                   Navigator.pushNamed(context, '/transcript');
                                 }
+                                widget.onComeBack();
                               },
                               child: Ink(
                                 padding: const EdgeInsets.all(8),
@@ -225,7 +230,9 @@ class StateMainPageButton extends State<MainPageButton> {
                               ),
                             ),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
+                            await LocalStorageService.setShownUserSuggestion();
+                            if (!context.mounted) return;
                             if (widget.function == 1) {
                               Navigator.pushNamed(context, '/manuel');
                             } else if (widget.function == 2) {
@@ -233,6 +240,7 @@ class StateMainPageButton extends State<MainPageButton> {
                             } else {
                               Navigator.pushNamed(context, '/transcript');
                             }
+                            widget.onComeBack();
                           },
                           child: Row(
                             children: [

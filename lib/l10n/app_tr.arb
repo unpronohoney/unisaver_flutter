@@ -18,9 +18,16 @@
   "careful_desc": "E-Devlet transkriptini alıp tüm derslerin ile hesaplama yapabilirsin.",
   "decisive_desc": "Klasik yöntemlerden şaşmıyorsan benimle kolayca hesaplayabilirsin.",
 
-  "recommend_manual": "Kesin sonuçlar için kararlıysan",
-  "recommend_comb": "Tüm ihtimalleri keşfetmeye meraklıysan",
-  "recommend_trans": "Tüm derslerini titizlikle hesaplamak istiyorsan",
+  "recommend_manual": "Kesin sonuçlar verir.",
+  "recommend_comb": "Tüm ihtimalleri gösterir.",
+  "recommend_trans": "Baştan sona hesaplar.",
+
+  "suggest_manual": "Kararlı kişiler için",
+  "suggest_comb": "Meraklı kişiler için",
+  "suggest_trans": "Titiz kişiler için",
+
+  "req_timeout": "İstek Zaman Aşımına Uğradı",
+  "req_exp": "Bir şeyler yanlış gitti. Lütfen daha sonra tekrar deneyin.",
 
   "required_net": "İnternet bağlantısı gerekli",
   "net_desc": "UniSaver’ı kullanabilmek için internet bağlantısı gereklidir.",

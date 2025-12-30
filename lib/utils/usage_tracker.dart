@@ -1,17 +1,26 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class UsageTracker {
-  static final _firestore = FirebaseFirestore.instance;
-  static final _auth = FirebaseAuth.instance;
 
-  static void _increment(String field) {
-    final uid = _auth.currentUser?.uid;
+  static void _increment(String field) async {
+    final auth = FirebaseAuth.instance;
+    final uid = auth.currentUser?.uid;
+    final firestore = FirebaseFirestore.instanceFor(app: Firebase.app(), databaseId: "users");
     if (uid == null) return;
+    DocumentSnapshot userDoc = await firestore.collection("users").doc(uid).get();
+    if (userDoc.exists) {
+      Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
 
-    _firestore.collection('users').doc(uid).update({
-      field: FieldValue.increment(1),
-    });
+      var fieldValue = data[field];
+      firestore.collection("users").doc(uid).update({
+        field: fieldValue + 1,
+      });
+    }
+
+
   }
 
   static void manual() => _increment('usedManual');

@@ -65,15 +65,28 @@ class AppLocalizationsEn extends AppLocalizations {
       'If you stick to traditional methods, you can easily calculate it with me.';
 
   @override
-  String get recommend_manual => 'If you prefer clear and decisive results';
+  String get recommend_manual => 'To get decisive results';
 
   @override
-  String get recommend_comb =>
-      'If you\'re curious to explore every possibility';
+  String get recommend_comb => 'To explore every possibility';
 
   @override
-  String get recommend_trans =>
-      'If you want a thorough calculation of all your courses';
+  String get recommend_trans => 'To perform thorough calculation';
+
+  @override
+  String get req_timeout => 'Request Time Out';
+
+  @override
+  String get req_exp => 'Something went wrong. Please try again later.';
+
+  @override
+  String get suggest_manual => 'For decisive people';
+
+  @override
+  String get suggest_comb => 'For curious people';
+
+  @override
+  String get suggest_trans => 'For careful people';
 
   @override
   String get required_net => 'Internet connection required';

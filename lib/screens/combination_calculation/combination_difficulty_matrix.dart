@@ -7,7 +7,6 @@ import 'package:unisaver_flutter/constants/background4.dart';
 import 'package:unisaver_flutter/database/term_savers.dart';
 import 'package:unisaver_flutter/system/term.dart';
 import 'package:unisaver_flutter/utils/loc.dart';
-import 'package:unisaver_flutter/utils/usage_tracker.dart';
 import 'package:unisaver_flutter/widgets/difficulty_matrix.dart';
 import 'package:unisaver_flutter/widgets/dialogs/info_and_bottom_sheet.dart';
 import 'package:unisaver_flutter/widgets/buttons/purple_button.dart';
@@ -60,7 +59,6 @@ class CombinationDifficultyMatrixState
         },
       ),
     )..load();
-    UsageTracker.combination();
   }
 
   @override

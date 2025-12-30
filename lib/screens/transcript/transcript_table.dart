@@ -6,7 +6,6 @@ import 'package:unisaver_flutter/constants/admob_ids.dart';
 import 'package:unisaver_flutter/constants/background3.dart';
 import 'package:unisaver_flutter/constants/colors.dart';
 import 'package:unisaver_flutter/constants/list_constants.dart';
-import 'package:unisaver_flutter/utils/usage_tracker.dart';
 import 'package:unisaver_flutter/widgets/buttons/list_edit_button.dart';
 import 'package:unisaver_flutter/widgets/dialogs/info_and_bottom_sheet.dart';
 import 'package:unisaver_flutter/widgets/dialogs/lecture_edit_dialog.dart';
@@ -63,7 +62,6 @@ class _TranscriptTableState extends State<TranscriptTable> {
   void initState() {
     super.initState();
     _loadBanner();
-    UsageTracker.transcript();
   }
 
   @override

@@ -197,20 +197,50 @@ abstract class AppLocalizations {
   /// No description provided for @recommend_manual.
   ///
   /// In en, this message translates to:
-  /// **'If you prefer clear and decisive results'**
+  /// **'To get decisive results'**
   String get recommend_manual;
 
   /// No description provided for @recommend_comb.
   ///
   /// In en, this message translates to:
-  /// **'If you\'re curious to explore every possibility'**
+  /// **'To explore every possibility'**
   String get recommend_comb;
 
   /// No description provided for @recommend_trans.
   ///
   /// In en, this message translates to:
-  /// **'If you want a thorough calculation of all your courses'**
+  /// **'To perform thorough calculation'**
   String get recommend_trans;
+
+  /// No description provided for @req_timeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Time Out'**
+  String get req_timeout;
+
+  /// No description provided for @req_exp.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again later.'**
+  String get req_exp;
+
+  /// No description provided for @suggest_manual.
+  ///
+  /// In en, this message translates to:
+  /// **'For decisive people'**
+  String get suggest_manual;
+
+  /// No description provided for @suggest_comb.
+  ///
+  /// In en, this message translates to:
+  /// **'For curious people'**
+  String get suggest_comb;
+
+  /// No description provided for @suggest_trans.
+  ///
+  /// In en, this message translates to:
+  /// **'For careful people'**
+  String get suggest_trans;
 
   /// No description provided for @required_net.
   ///

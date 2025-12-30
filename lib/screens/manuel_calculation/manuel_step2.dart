@@ -12,7 +12,6 @@ import 'package:unisaver_flutter/system/lecture_cubit.dart';
 import 'package:unisaver_flutter/system/letter_array.dart';
 import 'package:unisaver_flutter/system/term.dart';
 import 'package:unisaver_flutter/utils/loc.dart';
-import 'package:unisaver_flutter/utils/usage_tracker.dart';
 import 'package:unisaver_flutter/widgets/buttons/list_edit_button.dart';
 import 'package:unisaver_flutter/widgets/drop_down_spinner.dart';
 import 'package:unisaver_flutter/widgets/scaffold_message.dart';
@@ -81,7 +80,6 @@ class ManuelStepState extends State<ManuelStep2> with WidgetsBindingObserver {
         },
       ),
     )..load();
-    UsageTracker.manual();
   }
 
   @override

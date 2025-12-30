@@ -65,14 +65,29 @@ class AppLocalizationsTr extends AppLocalizations {
       'Klasik yöntemlerden şaşmıyorsan benimle kolayca hesaplayabilirsin.';
 
   @override
-  String get recommend_manual => 'Kesin sonuçlar için kararlıysan';
+  String get recommend_manual => 'Kesin sonuçlar verir.';
 
   @override
-  String get recommend_comb => 'Tüm ihtimalleri keşfetmeye meraklıysan';
+  String get recommend_comb => 'Tüm ihtimalleri gösterir.';
 
   @override
-  String get recommend_trans =>
-      'Tüm derslerini titizlikle hesaplamak istiyorsan';
+  String get recommend_trans => 'Baştan sona hesaplar.';
+
+  @override
+  String get req_timeout => 'İstek Zaman Aşımına Uğradı';
+
+  @override
+  String get req_exp =>
+      'Bir şeyler yanlış gitti. Lütfen daha sonra tekrar deneyin.';
+
+  @override
+  String get suggest_manual => 'Kararlı kişiler için';
+
+  @override
+  String get suggest_comb => 'Meraklı kişiler için';
+
+  @override
+  String get suggest_trans => 'Titiz kişiler için';
 
   @override
   String get required_net => 'İnternet bağlantısı gerekli';

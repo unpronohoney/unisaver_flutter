@@ -10,6 +10,7 @@ import 'package:unisaver_flutter/database/local_database_helper.dart';
 import 'package:unisaver_flutter/l10n/app_localizations.dart';
 import 'package:unisaver_flutter/utils/language_provider.dart';
 import 'package:unisaver_flutter/utils/theme_controller.dart';
+import 'package:unisaver_flutter/utils/usage_tracker.dart';
 import 'package:unisaver_flutter/widgets/buttons/main_page_button.dart';
 import 'package:unisaver_flutter/widgets/buttons/purple_button.dart';
 import 'package:unisaver_flutter/widgets/dialogs/recommend_button_wrapper.dart';
@@ -27,20 +28,18 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  String? type = LocalStorageService.userType;
-  final shown = LocalStorageService.shownUserSuggestion;
+  String? type;
+  bool? shown;
+  bool isBubbleOpen = true;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       bildirimIzniIste();
     });
-    if (!LocalStorageService.shownUserSuggestion) {
-      Future.delayed(const Duration(seconds: 2), () {
-        LocalStorageService.setShownUserSuggestion();
-        setState(() {});
-      });
-    }
+    type = LocalStorageService.userType;
+    shown = LocalStorageService.shownUserSuggestion;
   }
 
   int getRecommendedFunction(String userType) {
@@ -122,10 +121,17 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     final recommended = getRecommendedFunction(type ?? "");
-    final showCursor =
-        !LocalStorageService.shownUserSuggestion && recommended != 0;
-    return Scaffold(
+    final showCursor = shown != null && !shown! && recommended != 0;
+    return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          setState(() {
+            isBubbleOpen = false;
+          });
+        },
+        child: Scaffold(
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Stack(
         children: [
@@ -332,33 +338,51 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(height: 4.h),
+                        SizedBox(height: !showCursor && recommended == 1 ? 4.h - 18 : 4.h),
                         if (!showCursor && recommended == 1)
                           _recommendationText(
                             text: t(context).recommend_manual,
                           ),
                         RecommendedButtonWrapper(
-                          showCursor: showCursor && recommended == 1,
-                          message: t(context).recommend_manual,
-                          child: MainPageButton(function: 1),
+                          showCursor: showCursor && recommended == 1 && isBubbleOpen,
+                          message: t(context).suggest_manual,
+                          child: MainPageButton(function: 1, onComeBack: () {
+                            setState(() {
+                              type = LocalStorageService.userType;
+                              shown = LocalStorageService.shownUserSuggestion;
+                            });
+                            UsageTracker.manual();
+                          },),
                         ),
 
-                        SizedBox(height: 4.h),
+                        SizedBox(height: !showCursor && recommended == 2 ? 4.h - 18 : 4.h),
                         if (!showCursor && recommended == 2)
                           _recommendationText(text: t(context).recommend_comb),
                         RecommendedButtonWrapper(
-                          showCursor: showCursor && recommended == 2,
-                          message: t(context).recommend_comb,
-                          child: MainPageButton(function: 2),
+                          showCursor: showCursor && recommended == 2 && isBubbleOpen,
+                          message: t(context).suggest_comb,
+                          child: MainPageButton(function: 2, onComeBack: () {
+                            setState(() {
+                              type = LocalStorageService.userType;
+                              shown = LocalStorageService.shownUserSuggestion;
+                            });
+                            UsageTracker.combination();
+                          }),
                         ),
 
-                        SizedBox(height: 4.h),
+                        SizedBox(height: !showCursor && recommended == 3 ? 4.h - 18 : 4.h),
                         if (!showCursor && recommended == 3)
                           _recommendationText(text: t(context).recommend_trans),
                         RecommendedButtonWrapper(
-                          showCursor: showCursor && recommended == 3,
-                          message: t(context).recommend_trans,
-                          child: MainPageButton(function: 3),
+                          showCursor: showCursor && recommended == 3 && isBubbleOpen,
+                          message: t(context).suggest_trans,
+                          child: MainPageButton(function: 3, onComeBack: () {
+                            setState(() {
+                              type = LocalStorageService.userType;
+                              shown = LocalStorageService.shownUserSuggestion;
+                            });
+                            UsageTracker.transcript();
+                          }),
                         ),
                         SizedBox(height: 6.h),
                       ],
@@ -424,14 +448,14 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget _recommendationText({required String text}) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 28),
+      margin: EdgeInsets.only(left: 32, right: 100),
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(12),
           topRight: Radius.circular(12),

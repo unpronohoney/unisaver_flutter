@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:unisaver_flutter/constants/colors.dart';
+import 'package:unisaver_flutter/constants/suggestion_container.dart';
 
 class RecommendedButtonWrapper extends StatelessWidget {
   final Widget child;
@@ -16,12 +18,12 @@ class RecommendedButtonWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       clipBehavior: Clip.none,
-      alignment: Alignment.center,
+
       children: [
         child,
 
         if (showCursor)
-          Positioned(top: -36, child: _CursorBubble(message: message)),
+          Positioned(top: -64, left: 32, child: _CursorBubble(message: message)),
       ],
     );
   }
@@ -36,17 +38,21 @@ class _CursorBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: Colors.black.withValues(alpha: 0.75),
-          borderRadius: BorderRadius.circular(14),
-        ),
-        child: Text(
-          message,
-          style: const TextStyle(fontSize: 12, color: Colors.white),
-        ),
-      ),
+
+        child:
+          Container(
+            width: 160,
+              decoration: BoxDecoration(boxShadow: [BoxShadow(offset: Offset(4, 4), color: AppColors.niceBlack, blurRadius: 16)], borderRadius: BorderRadius.circular(15)),
+              child:
+          CustomPaint(painter: BubblePainter(), child: Container(
+            padding: EdgeInsets.all(15),
+            margin: EdgeInsets.only(bottom: 10),
+            child: Text(message, style: TextStyle(color: AppColors.niceBlack, fontSize: 14, fontFamily: 'Roboto'),)
+      ),)
+          ),
+
+
+
     );
   }
 }
