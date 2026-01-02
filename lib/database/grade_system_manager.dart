@@ -104,6 +104,8 @@ class GradeSystemManager {
       _box.put('selectedSystem', {'name': 'Default', 'letters': defaultSystem});
     }
 
+    await resetEditingSystem();
+
     // 3) LetterArray'i güncelle → sadece letters map gerekiyor
     final selected = _box.get('selectedSystem');
 

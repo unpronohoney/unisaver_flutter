@@ -103,7 +103,9 @@ class _ManuelHesapPageState extends State<ManuelCalcPage> {
                         ModernTextField(
                           controller: _gpaController,
                           label: t(context).currentAgno,
-                          keyboardType: TextInputType.number,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
                         ),
                         const SizedBox(height: 16),
                         ModernTextField(

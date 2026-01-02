@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -36,7 +37,10 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      bildirimIzniIste();
+      if (!LocalStorageService.shownNotificationIntro) {
+        bildirimIzniIste();
+        LocalStorageService.setShownNotificationIntro();
+      }
     });
     type = LocalStorageService.userType;
     shown = LocalStorageService.shownUserSuggestion;
@@ -56,19 +60,42 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future<void> bildirimIzniIste() async {
-    // Android 12 ve altı için otomatik izin
-    if (Platform.isAndroid) {
-      final androidInfo = await Permission.notification.status;
-      if (androidInfo.isGranted) return;
+    if (Platform.isIOS) {
+      await _requestIOSNotification();
+      return;
     }
 
-    PermissionStatus status = await Permission.notification.status;
+    // ANDROID
+    final status = await Permission.notification.status;
 
-    if (status.isDenied || status.isRestricted) {
-      status = await Permission.notification.request();
+    if (status.isGranted) return;
+
+    if (status.isDenied) {
+      final result = await Permission.notification.request();
+      if (result.isPermanentlyDenied) {
+        _showSettingsDialog();
+      }
     }
 
     if (status.isPermanentlyDenied) {
+      _showSettingsDialog();
+    }
+  }
+
+  Future<void> _requestIOSNotification() async {
+    final messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.getNotificationSettings();
+
+    if (settings.authorizationStatus == AuthorizationStatus.notDetermined) {
+      settings = await messaging.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    }
+
+    if (settings.authorizationStatus == AuthorizationStatus.denied) {
       _showSettingsDialog();
     }
   }
@@ -121,334 +148,371 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final recommended = getRecommendedFunction(type ?? "");
     final showCursor = shown != null && !shown! && recommended != 0;
     return GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          setState(() {
-            isBubbleOpen = false;
-          });
-        },
-        child: Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.secondary,
-      body: Stack(
-        children: [
-          const BlobBackground(),
-          SafeArea(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/info');
-                      },
-                      icon: Icon(
-                        Icons.question_mark_rounded,
-                        size: 32,
-                        color: Theme.of(context).colorScheme.secondaryFixed,
-                      ),
-                    ),
-                    const Spacer(),
-                    MenuAnchor(
-                      builder: (context, controller, child) {
-                        return IconButton(
-                          onPressed: () {
-                            controller.isOpen
-                                ? controller.close()
-                                : controller.open();
-                          },
-                          icon: Icon(
-                            Icons.more_vert,
-                            color: Theme.of(context).colorScheme.secondaryFixed,
-                            size: 32,
-                          ),
-                        );
-                      },
-
-                      style: MenuStyle(
-                        backgroundColor: WidgetStateProperty.all(
-                          Colors.transparent,
-                        ),
-                        elevation: WidgetStateProperty.all(0),
-                        padding: WidgetStateProperty.all(EdgeInsets.zero),
-                        shape: WidgetStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                        ),
-                      ),
-
-                      menuChildren: [
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(maxWidth: 75.w),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(18),
-                              child: BackdropFilter(
-                                filter: ImageFilter.blur(
-                                  sigmaX: 14,
-                                  sigmaY: 14,
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withValues(alpha: 0.08),
-                                    borderRadius: BorderRadius.circular(18),
-                                    border: Border.all(
-                                      color: Colors.white.withValues(
-                                        alpha: 0.18,
-                                      ),
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withValues(
-                                          alpha: 0.2,
-                                        ),
-                                        blurRadius: 20,
-                                        offset: Offset(0, 6),
-                                      ),
-                                    ],
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 6,
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      _glassMenuItem(
-                                        icon: Icons.grading_outlined,
-                                        text: t(context).menu1,
-                                        onPressed: () {
-                                          Navigator.pushNamed(
-                                            context,
-                                            '/letters',
-                                          );
-                                        },
-                                      ),
-                                      _glassMenuItem(
-                                        icon: Icons.language,
-                                        text: t(context).menu2,
-                                        onPressed: () async {
-                                          final provider = context
-                                              .read<LanguageProvider>();
-                                          provider.toggleLanguage(
-                                            AppLocalizations.of(
-                                                      context,
-                                                    )?.localeName ==
-                                                    'tr'
-                                                ? const Locale('tr')
-                                                : const Locale('en'),
-                                          );
-                                        },
-                                      ),
-                                      _glassMenuItem(
-                                        icon:
-                                            Theme.of(context).brightness ==
-                                                Brightness.light
-                                            ? Icons.light_mode
-                                            : Icons.dark_mode,
-                                        text:
-                                            Theme.of(context).brightness ==
-                                                Brightness.light
-                                            ? t(context).light_mode
-                                            : t(context).dark_mode,
-                                        onPressed: () {
-                                          context
-                                              .read<ThemeController>()
-                                              .toggleTheme();
-                                        },
-                                      ),
-                                      _glassMenuItem(
-                                        icon: Icons.call_made_rounded,
-                                        text: t(context).menu3,
-                                        onPressed: () {
-                                          Navigator.pushNamed(
-                                            context,
-                                            '/contact',
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-
-                Expanded(
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      children: [
-                        SizedBox(height: 6.h),
-                        ConstrainedBox(
-                          constraints: BoxConstraints(
-                            minWidth: 0,
-                            maxWidth: 90.w,
-                          ),
-                          child: FittedBox(
-                            child: Text(
-                              'UniSaver',
-                              style: TextStyle(
-                                fontFamily: 'MontserratAlternates',
-                                fontSize: 72,
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.secondaryFixed,
-                                shadows: [
-                                  Shadow(
-                                    color: AppColors.niceBlack.withValues(
-                                      alpha: 0.65,
-                                    ),
-                                    blurRadius: 8,
-                                    offset: Offset(4, 4),
-                                  ),
-                                ],
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          t(context).main_head1,
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontStyle: FontStyle.italic,
-                            fontSize: 20,
-                            color: Theme.of(context).colorScheme.secondaryFixed,
-                            shadows: [
-                              Shadow(
-                                color: AppColors.niceBlack.withValues(
-                                  alpha: 0.65,
-                                ),
-                                blurRadius: 8,
-                                offset: Offset(4, 4),
-                              ),
-                            ],
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: !showCursor && recommended == 1 ? 4.h - 18 : 4.h),
-                        if (!showCursor && recommended == 1)
-                          _recommendationText(
-                            text: t(context).recommend_manual,
-                          ),
-                        RecommendedButtonWrapper(
-                          showCursor: showCursor && recommended == 1 && isBubbleOpen,
-                          message: t(context).suggest_manual,
-                          child: MainPageButton(function: 1, onComeBack: () {
-                            setState(() {
-                              type = LocalStorageService.userType;
-                              shown = LocalStorageService.shownUserSuggestion;
-                            });
-                            UsageTracker.manual();
-                          },),
-                        ),
-
-                        SizedBox(height: !showCursor && recommended == 2 ? 4.h - 18 : 4.h),
-                        if (!showCursor && recommended == 2)
-                          _recommendationText(text: t(context).recommend_comb),
-                        RecommendedButtonWrapper(
-                          showCursor: showCursor && recommended == 2 && isBubbleOpen,
-                          message: t(context).suggest_comb,
-                          child: MainPageButton(function: 2, onComeBack: () {
-                            setState(() {
-                              type = LocalStorageService.userType;
-                              shown = LocalStorageService.shownUserSuggestion;
-                            });
-                            UsageTracker.combination();
-                          }),
-                        ),
-
-                        SizedBox(height: !showCursor && recommended == 3 ? 4.h - 18 : 4.h),
-                        if (!showCursor && recommended == 3)
-                          _recommendationText(text: t(context).recommend_trans),
-                        RecommendedButtonWrapper(
-                          showCursor: showCursor && recommended == 3 && isBubbleOpen,
-                          message: t(context).suggest_trans,
-                          child: MainPageButton(function: 3, onComeBack: () {
-                            setState(() {
-                              type = LocalStorageService.userType;
-                              shown = LocalStorageService.shownUserSuggestion;
-                            });
-                            UsageTracker.transcript();
-                          }),
-                        ),
-                        SizedBox(height: 6.h),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // ALT METİNLER
-                Padding(
-                  padding: EdgeInsets.only(
-                    bottom: 2.h,
-                    left: 4.w,
-                    right: 4.w,
-                    top: 2.h,
-                  ),
-                  child: Wrap(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        setState(() {
+          isBubbleOpen = false;
+        });
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        body: Stack(
+          children: [
+            const BlobBackground(),
+            SafeArea(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _bottomText(t(context).main_head2, () async {
-                        final Uri uri = Uri.parse(
-                          'https://sites.google.com/view/unisaverapp/ana-sayfa',
-                        );
-
-                        if (!await launchUrl(
-                          uri,
-                          mode: LaunchMode.externalApplication,
-                        )) {
-                          if (!context.mounted) return;
-                          showAlert(
-                            context,
-                            t(context).link_not_opened,
-                            '${t(context).link_n_opened_desc}\nLink: https://sites.google.com/view/unisaverapp/ana-sayfa',
-                          );
-                        }
-                      }),
-                      Text(
-                        '  ●  ',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 14,
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/info');
+                        },
+                        icon: Icon(
+                          Icons.question_mark_rounded,
+                          size: 32,
                           color: Theme.of(context).colorScheme.secondaryFixed,
                         ),
                       ),
-                      _bottomText(t(context).main_head3, () async {
-                        final Uri emailUri = Uri(
-                          scheme: 'mailto',
-                          path: 'bamisamu@hotmail.com',
-                        );
-
-                        if (!await launchUrl(emailUri)) {
-                          if (!context.mounted) return;
-                          showAlert(
-                            context,
-                            t(context).link_not_opened,
-                            t(context).link_n_opened_desc,
+                      const Spacer(),
+                      MenuAnchor(
+                        builder: (context, controller, child) {
+                          return IconButton(
+                            onPressed: () {
+                              controller.isOpen
+                                  ? controller.close()
+                                  : controller.open();
+                            },
+                            icon: Icon(
+                              Icons.more_vert,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.secondaryFixed,
+                              size: 32,
+                            ),
                           );
-                        }
-                      }),
+                        },
+
+                        style: MenuStyle(
+                          backgroundColor: WidgetStateProperty.all(
+                            Colors.transparent,
+                          ),
+                          elevation: WidgetStateProperty.all(0),
+                          padding: WidgetStateProperty.all(EdgeInsets.zero),
+                          shape: WidgetStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                          ),
+                        ),
+
+                        menuChildren: [
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(maxWidth: 75.w),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(18),
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(
+                                    sigmaX: 14,
+                                    sigmaY: 14,
+                                  ),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withValues(
+                                        alpha: 0.08,
+                                      ),
+                                      borderRadius: BorderRadius.circular(18),
+                                      border: Border.all(
+                                        color: Colors.white.withValues(
+                                          alpha: 0.18,
+                                        ),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withValues(
+                                            alpha: 0.2,
+                                          ),
+                                          blurRadius: 20,
+                                          offset: Offset(0, 6),
+                                        ),
+                                      ],
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 6,
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        _glassMenuItem(
+                                          icon: Icons.grading_outlined,
+                                          text: t(context).menu1,
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              '/letters',
+                                            );
+                                          },
+                                        ),
+                                        _glassMenuItem(
+                                          icon: Icons.language,
+                                          text: t(context).menu2,
+                                          onPressed: () async {
+                                            final provider = context
+                                                .read<LanguageProvider>();
+                                            provider.toggleLanguage(
+                                              AppLocalizations.of(
+                                                        context,
+                                                      )?.localeName ==
+                                                      'tr'
+                                                  ? const Locale('tr')
+                                                  : const Locale('en'),
+                                            );
+                                          },
+                                        ),
+                                        _glassMenuItem(
+                                          icon:
+                                              Theme.of(context).brightness ==
+                                                  Brightness.light
+                                              ? Icons.light_mode
+                                              : Icons.dark_mode,
+                                          text:
+                                              Theme.of(context).brightness ==
+                                                  Brightness.light
+                                              ? t(context).light_mode
+                                              : t(context).dark_mode,
+                                          onPressed: () {
+                                            context
+                                                .read<ThemeController>()
+                                                .toggleTheme();
+                                          },
+                                        ),
+                                        _glassMenuItem(
+                                          icon: Icons.call_made_rounded,
+                                          text: t(context).menu3,
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              '/contact',
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                ),
-              ],
+
+                  Expanded(
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(
+                        children: [
+                          SizedBox(height: 6.h),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minWidth: 0,
+                              maxWidth: 90.w,
+                            ),
+                            child: FittedBox(
+                              child: Text(
+                                'UniSaver',
+                                style: TextStyle(
+                                  fontFamily: 'MontserratAlternates',
+                                  fontSize: 72,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.secondaryFixed,
+                                  shadows: [
+                                    Shadow(
+                                      color: AppColors.niceBlack.withValues(
+                                        alpha: 0.65,
+                                      ),
+                                      blurRadius: 8,
+                                      offset: Offset(4, 4),
+                                    ),
+                                  ],
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
+                          Text(
+                            t(context).main_head1,
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontStyle: FontStyle.italic,
+                              fontSize: 20,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.secondaryFixed,
+                              shadows: [
+                                Shadow(
+                                  color: AppColors.niceBlack.withValues(
+                                    alpha: 0.65,
+                                  ),
+                                  blurRadius: 8,
+                                  offset: Offset(4, 4),
+                                ),
+                              ],
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: !showCursor && recommended == 1
+                                ? 4.h - 18
+                                : 4.h,
+                          ),
+                          if (!showCursor && recommended == 1)
+                            _recommendationText(
+                              text: t(context).recommend_manual,
+                            ),
+                          RecommendedButtonWrapper(
+                            showCursor:
+                                showCursor && recommended == 1 && isBubbleOpen,
+                            message: t(context).suggest_manual,
+                            child: MainPageButton(
+                              function: 1,
+                              onComeBack: () {
+                                setState(() {
+                                  type = LocalStorageService.userType;
+                                  shown =
+                                      LocalStorageService.shownUserSuggestion;
+                                });
+                                UsageTracker.manual();
+                              },
+                            ),
+                          ),
+
+                          SizedBox(
+                            height: !showCursor && recommended == 2
+                                ? 4.h - 18
+                                : 4.h,
+                          ),
+                          if (!showCursor && recommended == 2)
+                            _recommendationText(
+                              text: t(context).recommend_comb,
+                            ),
+                          RecommendedButtonWrapper(
+                            showCursor:
+                                showCursor && recommended == 2 && isBubbleOpen,
+                            message: t(context).suggest_comb,
+                            child: MainPageButton(
+                              function: 2,
+                              onComeBack: () {
+                                setState(() {
+                                  type = LocalStorageService.userType;
+                                  shown =
+                                      LocalStorageService.shownUserSuggestion;
+                                });
+                                UsageTracker.combination();
+                              },
+                            ),
+                          ),
+
+                          SizedBox(
+                            height: !showCursor && recommended == 3
+                                ? 4.h - 18
+                                : 4.h,
+                          ),
+                          if (!showCursor && recommended == 3)
+                            _recommendationText(
+                              text: t(context).recommend_trans,
+                            ),
+                          RecommendedButtonWrapper(
+                            showCursor:
+                                showCursor && recommended == 3 && isBubbleOpen,
+                            message: t(context).suggest_trans,
+                            child: MainPageButton(
+                              function: 3,
+                              onComeBack: () {
+                                setState(() {
+                                  type = LocalStorageService.userType;
+                                  shown =
+                                      LocalStorageService.shownUserSuggestion;
+                                });
+                                UsageTracker.transcript();
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 6.h),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // ALT METİNLER
+                  Padding(
+                    padding: EdgeInsets.only(
+                      bottom: 2.h,
+                      left: 4.w,
+                      right: 4.w,
+                      top: 2.h,
+                    ),
+                    child: Wrap(
+                      children: [
+                        _bottomText(t(context).main_head2, () async {
+                          final Uri uri = Uri.parse(
+                            'https://sites.google.com/view/unisaverapp/ana-sayfa',
+                          );
+
+                          if (!await launchUrl(
+                            uri,
+                            mode: LaunchMode.externalApplication,
+                          )) {
+                            if (!context.mounted) return;
+                            showAlert(
+                              context,
+                              t(context).link_not_opened,
+                              '${t(context).link_n_opened_desc}\nLink: https://sites.google.com/view/unisaverapp/ana-sayfa',
+                            );
+                          }
+                        }),
+                        Text(
+                          '  ●  ',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 14,
+                            color: Theme.of(context).colorScheme.secondaryFixed,
+                          ),
+                        ),
+                        _bottomText(t(context).main_head3, () async {
+                          final Uri emailUri = Uri(
+                            scheme: 'mailto',
+                            path: 'bamisamu@hotmail.com',
+                          );
+
+                          if (!await launchUrl(emailUri)) {
+                            if (!context.mounted) return;
+                            showAlert(
+                              context,
+                              t(context).link_not_opened,
+                              t(context).link_n_opened_desc,
+                            );
+                          }
+                        }),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ));
+    );
   }
 
   Widget _recommendationText({required String text}) {

@@ -16,16 +16,29 @@ class LanguageProvider extends ChangeNotifier {
 
     if (code != null) {
       _locale = Locale(code);
-      await initLanguageSubscription(code);
       notifyListeners();
+
+      _runInitLanguageSubscription(code);
     }
   }
 
   Future<void> setLocale(Locale newLocale) async {
     _locale = newLocale;
-    await LocalStorageService.setLocale(newLocale.languageCode);
-    await initLanguageSubscription(newLocale.languageCode);
     notifyListeners();
+
+    await LocalStorageService.setLocale(newLocale.languageCode);
+
+    _runInitLanguageSubscription(newLocale.languageCode);
+  }
+
+  void _runInitLanguageSubscription(String code) {
+    Future.microtask(() async {
+      try {
+        await initLanguageSubscription(code);
+      } catch (e, s) {
+        debugPrint('initLanguageSubscription error: $e');
+      }
+    });
   }
 
   Future<void> toggleLanguage(Locale systemLocale) async {

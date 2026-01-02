@@ -239,9 +239,10 @@ class TranscriptReader extends ChangeNotifier {
     final mScale = scalePattern.firstMatch(text);
 
     if (mScale != null) {
-      _scale = double.tryParse(mScale.group(1) ?? '') ?? 0.0;
+      _scale =
+          double.tryParse(mScale.group(1)?.replaceAll(',', '.') ?? '') ?? 0.0;
       final agnoStr = (mScale.group(2) ?? '').replaceAll(',', '.');
-      _gpa = double.tryParse(agnoStr) ?? 0.0;
+      _gpa = double.tryParse(agnoStr.replaceAll(',', '.')) ?? 0.0;
     }
     lessonNames.clear();
     credits.clear();

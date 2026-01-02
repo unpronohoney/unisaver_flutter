@@ -1,3 +1,4 @@
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,6 +45,7 @@ void main() async {
   await GradeSystemManager.init();
   await Firebase.initializeApp();
   // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  await requestATT();
   await MobileAds.instance.initialize();
   await LocalStorageService.init();
   runApp(
@@ -59,6 +61,19 @@ void main() async {
       ),
     ),
   );
+}
+
+Future<void> requestATT() async {
+  final status = await AppTrackingTransparency.trackingAuthorizationStatus;
+  if (status == TrackingStatus.notDetermined) {
+    await AppTrackingTransparency.requestTrackingAuthorization();
+  } else if (status == TrackingStatus.denied) {
+    MobileAds.instance.updateRequestConfiguration(
+      RequestConfiguration(
+        tagForChildDirectedTreatment: TagForChildDirectedTreatment.unspecified,
+      ),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {

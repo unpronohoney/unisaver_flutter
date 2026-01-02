@@ -144,7 +144,10 @@ class _StateCreateEditArray extends State<CreateEditArray> {
                                   ModernTextField(
                                     controller: effectCtrl,
                                     label: t(context).effect,
-                                    keyboardType: TextInputType.number,
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                          decimal: true,
+                                        ),
                                     maxLength: 5,
                                     autoWidth: true,
                                     hasError: value == 2 || value == 3,
@@ -171,7 +174,10 @@ class _StateCreateEditArray extends State<CreateEditArray> {
                                     letters.contains(letterCtrl.text);
                                 bool efferr =
                                     effectCtrl.text.isEmpty ||
-                                    double.tryParse(effectCtrl.text) == null;
+                                    double.tryParse(
+                                          effectCtrl.text.replaceAll(',', '.'),
+                                        ) ==
+                                        null;
                                 if (leterr && efferr) {
                                   letterError.value = 3;
                                 } else if (leterr) {
@@ -181,7 +187,7 @@ class _StateCreateEditArray extends State<CreateEditArray> {
                                 } else {
                                   setState(() {
                                     letterArray[letterCtrl.text] = double.parse(
-                                      effectCtrl.text,
+                                      effectCtrl.text.replaceAll(',', '.'),
                                     );
                                     letters.add(letterCtrl.text);
                                   });
