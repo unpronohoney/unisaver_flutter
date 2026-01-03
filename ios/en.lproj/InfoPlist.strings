@@ -1,0 +1,8 @@
+/* 
+  InfoPlist.strings
+  Runner
+
+  Created by Aybeniz Aksoy on 3.01.2026.
+  
+*/
+"NSUserTrackingUsageDescription" = "We need your permission to show you more relevant ads.";
