@@ -833,7 +833,7 @@ abstract class AppLocalizations {
   /// No description provided for @light_mode.
   ///
   /// In en, this message translates to:
-  /// **'Ligth Mode'**
+  /// **'Light Mode'**
   String get light_mode;
 
   /// No description provided for @dark_mode.

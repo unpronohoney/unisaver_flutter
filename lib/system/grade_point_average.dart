@@ -2,11 +2,11 @@ import 'package:unisaver_flutter/system/lecture.dart';
 import 'package:unisaver_flutter/system/letter_array.dart';
 
 class GradePointAverage {
-  int totCred;
+  double totCred;
   double currentGPA;
   GradePointAverage({required this.totCred, required this.currentGPA});
 
-  int getTotCred() {
+  double getTotCred() {
     return totCred;
   }
 
@@ -14,14 +14,14 @@ class GradePointAverage {
     return currentGPA;
   }
 
-  void calcInsertNewLecture(int cred, String letter) {
+  void calcInsertNewLecture(double cred, String letter) {
     currentGPA =
         currentGPA * totCred + LetterArray.calculateLecturePoint(letter, cred);
     totCred += cred;
     currentGPA = currentGPA / totCred;
   }
 
-  void calcInsertOldLecture(int cred, String oldLetter, String newLetter) {
+  void calcInsertOldLecture(double cred, String oldLetter, String newLetter) {
     currentGPA = currentGPA * totCred;
     currentGPA =
         currentGPA +
@@ -31,10 +31,10 @@ class GradePointAverage {
   }
 
   void calcChangeCredit(
-    int oldCred,
+    double oldCred,
     String oldLetter,
     String newLetter,
-    int newCred,
+    double newCred,
   ) {
     currentGPA = currentGPA * totCred;
     if (LetterArray.checkLetterValid(oldLetter)) {
@@ -55,7 +55,7 @@ class GradePointAverage {
     currentGPA = currentGPA / totCred;
   }
 
-  void calcChangeOldLetter(int cred, String oldLetter, String newOldLetter) {
+  void calcChangeOldLetter(double cred, String oldLetter, String newOldLetter) {
     currentGPA = currentGPA * totCred;
     if (!LetterArray.checkLetterValid(oldLetter)) {
       currentGPA =
@@ -90,7 +90,7 @@ class GradePointAverage {
     currentGPA = currentGPA / totCred;
   }
 
-  void calcChangeNewLetter(int cred, String newLetter, String newNewLetter) {
+  void calcChangeNewLetter(double cred, String newLetter, String newNewLetter) {
     currentGPA = currentGPA * totCred;
     currentGPA =
         currentGPA +

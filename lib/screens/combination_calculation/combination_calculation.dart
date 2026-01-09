@@ -118,7 +118,9 @@ class _CombinationCalcPageState extends State<CombinationCalcPage> {
                         ModernTextField(
                           controller: _credController,
                           label: t(context).totalCred2,
-                          keyboardType: TextInputType.number,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
                         ),
                         const SizedBox(height: 32),
                         PurpleButton(
@@ -137,12 +139,17 @@ class _CombinationCalcPageState extends State<CombinationCalcPage> {
                                     ) !=
                                     null &&
                                 _credController.text.isNotEmpty &&
-                                int.tryParse(_credController.text) != null) {
+                                double.tryParse(
+                                      _credController.text.replaceAll(',', '.'),
+                                    ) !=
+                                    null) {
                               double gpa = double.parse(
                                 _gpaController.text.replaceAll(',', '.'),
                               );
                               if (LetterArray.checkGpaValid(gpa)) {
-                                int cred = int.parse(_credController.text);
+                                double cred = double.parse(
+                                  _credController.text.replaceAll(',', '.'),
+                                );
                                 if (cred >= 0) {
                                   Term.instance.initialize(
                                     GradePointAverage(

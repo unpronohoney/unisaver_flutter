@@ -170,7 +170,10 @@ class ManuelStepState extends State<ManuelStep2> with WidgetsBindingObserver {
                                   return ModernTextField(
                                     controller: _courseCredController,
                                     label: t(context).lecCred,
-                                    keyboardType: TextInputType.number,
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                          decimal: true,
+                                        ),
                                     hasError: value,
                                     onErrorReset: () {
                                       isCredOkey.value = false;
@@ -218,8 +221,9 @@ class ManuelStepState extends State<ManuelStep2> with WidgetsBindingObserver {
                                     isNameOkey.value = true;
                                   }
                                   if (_courseCredController.text.isEmpty ||
-                                      int.tryParse(
-                                            _courseCredController.text,
+                                      double.tryParse(
+                                            _courseCredController.text
+                                                .replaceAll(',', '.'),
                                           ) ==
                                           null) {
                                     isCredOkey.value = true;
@@ -235,8 +239,9 @@ class ManuelStepState extends State<ManuelStep2> with WidgetsBindingObserver {
                                       _courseCredController.text.isEmpty ||
                                       oldLetterNotifier.value == null ||
                                       newLetterNotifier.value == null ||
-                                      int.tryParse(
-                                            _courseCredController.text,
+                                      double.tryParse(
+                                            _courseCredController.text
+                                                .replaceAll(',', '.'),
                                           ) ==
                                           null) {
                                     return;
@@ -245,8 +250,11 @@ class ManuelStepState extends State<ManuelStep2> with WidgetsBindingObserver {
                                   if (context.read<LectureCubit>().addLecture(
                                     Lecture(
                                       name: _courseNameController.text,
-                                      credit: int.parse(
-                                        _courseCredController.text,
+                                      credit: double.parse(
+                                        _courseCredController.text.replaceAll(
+                                          ',',
+                                          '.',
+                                        ),
                                       ),
                                       letterGrade: oldLetterNotifier.value!,
                                       newLetterGrade: newLetterNotifier.value!,

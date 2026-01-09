@@ -100,7 +100,9 @@ void showEditDialog(
             ModernTextField(
               controller: creditCtrl,
               label: t(context).credit,
-              keyboardType: TextInputType.number,
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
             ),
             if (type == 1 || type == 2) const SizedBox(height: 16),
 
@@ -142,9 +144,12 @@ void showEditDialog(
             PurpleButton(
               onPressed: () {
                 if (creditCtrl.text.isNotEmpty &&
-                    int.tryParse(creditCtrl.text) != null) {
+                    double.tryParse(creditCtrl.text.replaceAll(',', '.')) !=
+                        null) {
                   //credit control not null
-                  int credit = int.parse(creditCtrl.text);
+                  double credit = double.parse(
+                    creditCtrl.text.replaceAll(',', '.'),
+                  );
                   if (credit < 1) return; //credit is not lower than 1
 
                   if (lecture != null) {

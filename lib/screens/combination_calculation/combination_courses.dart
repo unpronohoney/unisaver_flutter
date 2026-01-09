@@ -159,7 +159,10 @@ class CombinationCoursesState extends State<CombinationCourses>
                                   return ModernTextField(
                                     controller: _courseCredController,
                                     label: t(context).lecCred,
-                                    keyboardType: TextInputType.number,
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                          decimal: true,
+                                        ),
                                     hasError: value,
                                     onErrorReset: () {
                                       isCredOkey.value = false;
@@ -195,8 +198,9 @@ class CombinationCoursesState extends State<CombinationCourses>
                                         isNameOkey.value = true;
                                       }
                                       if (_courseCredController.text.isEmpty ||
-                                          int.tryParse(
-                                                _courseCredController.text,
+                                          double.tryParse(
+                                                _courseCredController.text
+                                                    .replaceAll(',', '.'),
                                               ) ==
                                               null) {
                                         isCredOkey.value = true;
@@ -209,16 +213,20 @@ class CombinationCoursesState extends State<CombinationCourses>
                                       }
                                       if (_courseNameController.text.isEmpty ||
                                           _courseCredController.text.isEmpty ||
-                                          int.tryParse(
-                                                _courseCredController.text,
+                                          double.tryParse(
+                                                _courseCredController.text
+                                                    .replaceAll(',', '.'),
                                               ) ==
                                               null ||
                                           oldLetterNotifier.value == null) {
                                         return;
                                       }
 
-                                      int cred = int.parse(
-                                        _courseCredController.text,
+                                      double cred = double.parse(
+                                        _courseCredController.text.replaceAll(
+                                          ',',
+                                          '.',
+                                        ),
                                       );
                                       if (cred >= 0) {
                                         if (context

@@ -150,7 +150,7 @@ class _TranscriptTableState extends State<TranscriptTable> {
                                         fontSize: 16,
                                       ),
                                     ),
-                                    if (reader!.getDiffirence != 0)
+                                    if (reader!.getDiffirence != 0.0)
                                       ChangeShower(diff: reader!.getDiffirence),
                                   ],
                                 ),

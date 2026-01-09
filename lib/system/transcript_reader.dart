@@ -4,17 +4,17 @@ import 'package:unisaver_flutter/system/lecture.dart';
 class TranscriptReader extends ChangeNotifier {
   double _gpa = 0.0;
   double _scale = 0;
-  int _cred = 0;
+  double _cred = 0;
   double _computedGpa = 0.0;
   double _roundedPreviousGpa = 0.0;
   double _roundedComputedGpa = 0.0;
-  int _computedCred = 0;
+  double _computedCred = 0;
   String _studentName = '';
   final Map<String, double> notes = {};
   final List<Lecture> lessons = [];
   final List<String> lessonNames = [];
-  final List<int> credits = [];
-  final List<int> aktsValues = [];
+  final List<double> credits = [];
+  final List<double> aktsValues = [];
   final List<String> lessonLetters = [];
   final List<String> lessonDescriptions = [];
   final List<String> lessonCodes = [];
@@ -52,7 +52,7 @@ class TranscriptReader extends ChangeNotifier {
     compute();
   }
 
-  void updateLesson(int row, int credit, String letter) {
+  void updateLesson(int row, double credit, String letter) {
     lessons[row].credit = credit;
     if (notes.keys.contains(letter)) {
       lessons[row].letterGrade = letter;
@@ -69,7 +69,7 @@ class TranscriptReader extends ChangeNotifier {
     }
   }
 
-  void addLesson(String name, int credit, String note) {
+  void addLesson(String name, double credit, String note) {
     lessons.add(
       Lecture(
         credit: credit,
@@ -83,7 +83,7 @@ class TranscriptReader extends ChangeNotifier {
 
   void compute() {
     double actualGpa = 0.0;
-    int totCred = 0;
+    double totCred = 0;
     for (var i = 0; i < lessons.length; i++) {
       final letter = lessons[i].letterGrade;
       final value = notes[letter] ?? 0.0;
@@ -229,7 +229,8 @@ class TranscriptReader extends ChangeNotifier {
     final mCred = credPattern.firstMatch(text);
 
     if (mCred != null) {
-      _cred = int.tryParse(mCred.group(1) ?? '') ?? 0;
+      _cred =
+          double.tryParse(mCred.group(1)?.replaceAll(',', '.') ?? '') ?? 0.0;
     }
 
     final scalePattern = RegExp(
@@ -289,10 +290,10 @@ class TranscriptReader extends ChangeNotifier {
       r"(?:\s*\([^\r\n]+\)\s*\r?\n)?"
       r"\s*[A-Z]\s*\r?\n"
       r"\s*[^\r\n]+\s*\r?\n"
-      r"\s*\d+\s*\r?\n"
-      r"\s*\d+\s*\r?\n"
-      r"\s*(\d+)\s*\r?\n"
-      r"\s*(\d+)\s*\r?\n"
+      r"\s*\d+(?:[.,]\d+)?\s*\r?\n" // T
+      r"\s*\d+(?:[.,]\d+)?\s*\r?\n" // U
+      r"\s*(\d+(?:[.,]\d+)?)\s*\r?\n" // UK
+      r"\s*(\d+(?:[.,]\d+)?)\s*\r?\n" // AKTS
       r"\s*\d+(?:[.,]\d+)?\s*\r?\n"
       r"\s*([A-Zİ+\-]{1,3})\s*\r?\n"
       r"\s*([^\r\n]+)\s*$",
@@ -304,8 +305,8 @@ class TranscriptReader extends ChangeNotifier {
     for (final m in lessonmatches) {
       final lessonCode = m.group(1)!;
       final lessonName = m.group(2)!;
-      final credit = int.parse(m.group(3)!);
-      final akts = int.parse(m.group(4)!);
+      final credit = double.parse(m.group(3)?.replaceAll(',', '.') ?? '');
+      final akts = double.parse(m.group(4)?.replaceAll(',', '.') ?? '');
       final letter = m.group(5)!;
       final desc = m.group(6)!;
 
@@ -323,10 +324,12 @@ class TranscriptReader extends ChangeNotifier {
         //);
       }
     }
-    int totakts = aktsValues.fold(0, (a, b) => a + b);
-    int totcredits = credits.fold(0, (a, b) => a + b);
-    int creddiff = _cred > totcredits ? _cred - totcredits : totcredits - _cred;
-    int aktsdiff = _cred > totakts ? _cred - totakts : totakts - _cred;
+    double totakts = aktsValues.fold(0, (a, b) => a + b);
+    double totcredits = credits.fold(0, (a, b) => a + b);
+    double creddiff = _cred > totcredits
+        ? _cred - totcredits
+        : totcredits - _cred;
+    double aktsdiff = _cred > totakts ? _cred - totakts : totakts - _cred;
     isCred = creddiff <= aktsdiff;
 
     final equivBlockRegex = RegExp(
@@ -354,10 +357,10 @@ class TranscriptReader extends ChangeNotifier {
 
   double get gpa => (_gpa * 100).round() / 100;
   double get scale => _scale;
-  int get cred => _cred;
+  double get cred => _cred;
   double get computedGpa => _roundedComputedGpa;
   double get getDiffirence =>
       ((_roundedComputedGpa - _roundedPreviousGpa) * 100).round() / 100;
-  int get computedCred => _computedCred;
+  double get computedCred => _computedCred;
   String get studentName => _studentName;
 }

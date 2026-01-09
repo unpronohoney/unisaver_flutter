@@ -35,7 +35,7 @@ class LanguageProvider extends ChangeNotifier {
     Future.microtask(() async {
       try {
         await initLanguageSubscription(code);
-      } catch (e, s) {
+      } catch (e) {
         debugPrint('initLanguageSubscription error: $e');
       }
     });

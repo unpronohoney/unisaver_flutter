@@ -5,7 +5,7 @@ import 'package:unisaver_flutter/system/letter_array.dart';
 class Term {
   static Term? _instance;
   double oldgpa;
-  int oldcred;
+  double oldcred;
   GradePointAverage gpa;
   List<Lecture> lectures = [];
   Map<String, int> difficulties = {};
@@ -73,8 +73,8 @@ class Term {
   void calculate() {
     gpa.currentGPA = oldgpa;
     gpa.totCred = oldcred;
-    int credstoadd = 0;
-    int tempcred = gpa.totCred;
+    double credstoadd = 0;
+    double tempcred = gpa.totCred;
     double tempgpa = gpa.currentGPA * tempcred;
 
     for (var lec in lectures) {
@@ -136,7 +136,7 @@ class Term {
 
   void updateLecture(
     Lecture lec,
-    int? newCred,
+    double? newCred,
     String newOldLetter,
     String newNewLetter,
     bool isnewoldletternone,

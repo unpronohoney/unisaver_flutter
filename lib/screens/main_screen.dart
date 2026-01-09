@@ -20,6 +20,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../constants/colors.dart';
 import 'package:unisaver_flutter/utils/loc.dart';
 import 'package:unisaver_flutter/constants/background.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -36,14 +38,31 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!LocalStorageService.shownNotificationIntro) {
-        bildirimIzniIste();
+        await bildirimIzniIste();
         LocalStorageService.setShownNotificationIntro();
       }
+      await Future.delayed(const Duration(milliseconds: 500));
+      await _initAdMobWithPrivacy();
     });
     type = LocalStorageService.userType;
     shown = LocalStorageService.shownUserSuggestion;
+  }
+
+  Future<void> _initAdMobWithPrivacy() async {
+    if (Platform.isIOS) {
+      await Future.delayed(const Duration(seconds: 2));
+
+      TrackingStatus status =
+          await AppTrackingTransparency.trackingAuthorizationStatus;
+
+      if (status == TrackingStatus.notDetermined) {
+        status = await AppTrackingTransparency.requestTrackingAuthorization();
+      }
+      print("Takip İzni Durumu: $status");
+    }
+    await MobileAds.instance.initialize();
   }
 
   int getRecommendedFunction(String userType) {
