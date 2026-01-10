@@ -22,7 +22,7 @@ class LetterArray {
 
   static List<String> letters = lettermap.keys.toList();
 
-  static double calculateLecturePoint(String letter, int credit) {
+  static double calculateLecturePoint(String letter, double credit) {
     final value = lettermap[letter];
     if (value == null) {
       throw Exception('Geçersiz harf notu.');

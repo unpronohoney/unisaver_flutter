@@ -111,14 +111,14 @@ class CombinationConstraints {
 
   static Map<double, List<int>> listByGpas(
     double gpa,
-    int totcred,
+    double totcred,
     List<List<int>> combinations,
     List<Lecture> sortedLectures,
     String noneLetter,
     Map<String, double> letterArray,
   ) {
     double calculated;
-    int calcCred;
+    double calcCred;
     Map<double, List<int>> combinationsByGpas = {};
     final letters = letterArray.keys.toList();
     for (int c = 0; c < combinations.length; c++) {
@@ -148,7 +148,7 @@ class CombinationConstraints {
   static Map<double, List<int>> applyConstraints(
     List<List<int>> combinations,
     double gpa,
-    int totcred,
+    double totcred,
     List<Lecture> sortedLectures,
     String noneLetter,
     double minGpa,
@@ -159,7 +159,7 @@ class CombinationConstraints {
     Map<String, double> letterArray,
   ) {
     double calculated;
-    int calcCred;
+    double calcCred;
     Map<double, List<int>> appliedCombinations = {};
     final letters = letterArray.keys.toList();
     final forbiddenSet = forbiddenLetters.toSet();
@@ -219,7 +219,7 @@ class CombinationConstraints {
 
 class ListByGpaPayload {
   final double gpa;
-  final int totcred;
+  final double totcred;
   final List<List<int>> combinations;
   final List<Lecture> sortedLectures;
   final String noneLetter;
@@ -237,7 +237,7 @@ class ListByGpaPayload {
 
 class ApplyConstraintsPayload {
   final double gpa;
-  final int totcred;
+  final double totcred;
   final List<List<int>> combinations;
   final List<Lecture> sortedLectures;
   final String noneLetter;

@@ -29,7 +29,6 @@ import 'package:unisaver_flutter/utils/language_provider.dart';
 import 'package:unisaver_flutter/utils/theme_controller.dart';
 import 'l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 // @pragma('vm:entry-point')
@@ -44,7 +43,6 @@ void main() async {
   await GradeSystemManager.init();
   await Firebase.initializeApp();
   // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  await MobileAds.instance.initialize();
   await LocalStorageService.init();
   runApp(
     MultiBlocProvider(

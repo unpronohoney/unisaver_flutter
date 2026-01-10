@@ -413,7 +413,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timeout_error => 'The request has expired.';
 
   @override
-  String get light_mode => 'Ligth Mode';
+  String get light_mode => 'Light Mode';
 
   @override
   String get dark_mode => 'Night Mode';

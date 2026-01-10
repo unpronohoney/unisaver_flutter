@@ -150,14 +150,14 @@ class _TranscriptTableState extends State<TranscriptTable> {
                                         fontSize: 16,
                                       ),
                                     ),
-                                    if (reader!.getDiffirence != 0)
+                                    if (reader!.getDiffirence != 0.0)
                                       ChangeShower(diff: reader!.getDiffirence),
                                   ],
                                 ),
                               ),
 
                               Text(
-                                t(context).credits(reader!.computedCred),
+                                t(context).credits((reader!.computedCred * 100).round() / 100),
                                 style: TextStyle(
                                   fontFamily: 'Monospace',
                                   fontSize: 16,
@@ -446,161 +446,99 @@ class _TranscriptTableState extends State<TranscriptTable> {
   }
 
   Widget getMismatchDescription() {
-    final mismatch = reader!.diffLevel;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 16),
-        if (mismatch == 1 || mismatch == 3)
-          Column(
-            children: [
-              Row(
-                children: [
-                  Text(
-                    t(context).written_trans(t(context).gpa_column),
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.secondaryFixed,
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      reader!.gpa.toString(),
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 24,
-                        color: Theme.of(context).colorScheme.tertiaryFixed,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text(
-                    t(context).i_calculated(t(context).gpa_column),
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.secondaryFixed,
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      reader!.computedGpa.toString(),
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 24,
-                        color: Theme.of(context).colorScheme.tertiaryFixed,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text(
-                    t(context).changes_will_calc,
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.secondaryFixed,
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      reader!.computedGpa.toString(),
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 24,
-                        color: Theme.of(context).colorScheme.tertiaryFixed,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+      final mismatch = reader!.diffLevel;
 
-        if (mismatch == 3) const SizedBox(height: 16),
-        if (mismatch == 3)
-          Text(
-            t(context).and,
-            style: const TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 16,
-              color: AppColors.grayishBlue,
+      // Tekrar eden kodları önlemek için minik bir yardımcı fonksiyon
+      Widget _buildInfoText(String label, String value) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 4.0), // Satırlar arası hafif boşluk
+          child: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: "$label ", // Etiket (Örn: "Hesaplanan Kredi: ")
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 16,
+                    color: Theme.of(context).colorScheme.secondaryFixed,
+                  ),
+                ),
+                TextSpan(
+                  text: value, // Değer (Örn: "24.5")
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold, // Değeri biraz öne çıkaralım
+                    color: Theme.of(context).colorScheme.tertiaryFixed,
+                  ),
+                ),
+              ],
             ),
+            textAlign: TextAlign.start, // Sola dayalı olmasını garanti eder
           ),
-        if (mismatch == 3) const SizedBox(height: 16),
-        if (mismatch == 3 || mismatch == 2)
-          Column(
-            children: [
-              Row(
-                children: [
-                  Text(
-                    t(context).written_trans(t(context).credit),
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.secondaryFixed,
-                    ),
-                  ),
-                  Text(
-                    reader!.cred.toString(),
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 24,
-                      color: Theme.of(context).colorScheme.tertiaryFixed,
-                    ),
-                  ),
-                ],
+        );
+      }
+
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start, // En dıştaki sola dayalı
+        children: [
+          const SizedBox(height: 16),
+          
+          // GPA KISMI
+          if (mismatch == 1 || mismatch == 3)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start, // İÇ SÜTUN DA SOLA DAYALI OLMALI
+              children: [
+                _buildInfoText(
+                  t(context).written_trans(t(context).gpa_column),
+                  reader!.gpa.toString(),
+                ),
+                _buildInfoText(
+                  t(context).i_calculated(t(context).gpa_column),
+                  reader!.computedGpa.toString(),
+                ),
+                _buildInfoText(
+                  t(context).changes_will_calc,
+                  reader!.computedGpa.toString(), // Buradaki mantığı kontrol et, yukarıdakiyle aynı görünüyor
+                ),
+              ],
+            ),
+
+          if (mismatch == 3) const SizedBox(height: 16),
+          
+          if (mismatch == 3)
+            Text(
+              t(context).and,
+              style: const TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 16,
+                color: AppColors.grayishBlue,
               ),
-              Row(
-                children: [
-                  Text(
-                    t(context).i_calculated(t(context).credit),
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.secondaryFixed,
-                    ),
-                  ),
-                  Text(
-                    reader!.computedCred.toString(),
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 24,
-                      color: Theme.of(context).colorScheme.tertiaryFixed,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text(
-                    t(context).changes_will_calc,
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.secondaryFixed,
-                    ),
-                  ),
-                  Text(
-                    reader!.computedCred.toString(),
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 24,
-                      color: Theme.of(context).colorScheme.tertiaryFixed,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-      ],
-    );
-  }
+            ),
+            
+          if (mismatch == 3) const SizedBox(height: 16),
+
+          // KREDİ KISMI
+          if (mismatch == 3 || mismatch == 2)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start, // İÇ SÜTUN DA SOLA DAYALI OLMALI
+              children: [
+                _buildInfoText(
+                  t(context).written_trans(t(context).credit),
+                  reader!.cred.toString(),
+                ),
+                _buildInfoText(
+                  t(context).i_calculated(t(context).credit),
+                  reader!.computedCred.toString(),
+                ),
+                _buildInfoText(
+                  t(context).changes_will_calc,
+                  reader!.computedCred.toString(),
+                ),
+              ],
+            ),
+        ],
+      );
+    }
 }

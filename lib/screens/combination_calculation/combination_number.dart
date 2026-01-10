@@ -574,7 +574,10 @@ class CombinationNumberState extends State<CombinationNumber> {
                             ModernTextField(
                               controller: minGpaController,
                               label: t(context).min_gpa,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                    decimal: true,
+                                  ),
                               autoWidth: true,
                               maxLength: 4,
                             ),
@@ -589,7 +592,10 @@ class CombinationNumberState extends State<CombinationNumber> {
                             ModernTextField(
                               controller: maxGpaController,
                               label: t(context).max_gpa,
-                              keyboardType: TextInputType.number,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                    decimal: true,
+                                  ),
                               autoWidth: true,
                               maxLength: 4,
                             ),
@@ -682,6 +688,10 @@ class CombinationNumberState extends State<CombinationNumber> {
                               child: ModernTextField(
                                 controller: margincontroller,
                                 label: t(context).fourt_constraint,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                      decimal: true,
+                                    ),
                               ),
                             ),
                             infoButton(context, () {
@@ -723,9 +733,16 @@ class CombinationNumberState extends State<CombinationNumber> {
                               }
                             }
                             if (margincontroller.text.isNotEmpty &&
-                                double.tryParse(margincontroller.text) !=
+                                double.tryParse(
+                                      margincontroller.text.replaceAll(
+                                        ',',
+                                        '.',
+                                      ),
+                                    ) !=
                                     null) {
-                              margin = double.parse(margincontroller.text);
+                              margin = double.parse(
+                                margincontroller.text.replaceAll(',', '.'),
+                              );
                               if (margin < 0.01 || margin > maxGpa!) {
                                 margin = null;
                                 margincontroller.text = marginBetweenGpas
@@ -736,9 +753,16 @@ class CombinationNumberState extends State<CombinationNumber> {
                               }
                             }
                             if (minGpaController.text.isNotEmpty &&
-                                double.tryParse(minGpaController.text) !=
+                                double.tryParse(
+                                      minGpaController.text.replaceAll(
+                                        ',',
+                                        '.',
+                                      ),
+                                    ) !=
                                     null) {
-                              min = double.parse(minGpaController.text);
+                              min = double.parse(
+                                minGpaController.text.replaceAll(',', '.'),
+                              );
                               if (min < LetterArray.lettermap[letters.last]! ||
                                   min > LetterArray.lettermap[letters.first]!) {
                                 min = null;
@@ -746,9 +770,16 @@ class CombinationNumberState extends State<CombinationNumber> {
                               }
                             }
                             if (maxGpaController.text.isNotEmpty &&
-                                double.tryParse(maxGpaController.text) !=
+                                double.tryParse(
+                                      maxGpaController.text.replaceAll(
+                                        ',',
+                                        '.',
+                                      ),
+                                    ) !=
                                     null) {
-                              max = double.parse(maxGpaController.text);
+                              max = double.parse(
+                                maxGpaController.text.replaceAll(',', '.'),
+                              );
                               if (max < LetterArray.lettermap[letters.last]! ||
                                   max > LetterArray.lettermap[letters.first]!) {
                                 max = null;

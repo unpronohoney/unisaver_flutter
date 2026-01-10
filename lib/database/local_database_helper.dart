@@ -23,6 +23,13 @@ class LocalStorageService {
 
   static int get usedManual => _prefs.getInt("usedManual") ?? 0;
 
+  static bool get shownNotificationIntro =>
+      _prefs.getBool("shownNotificationIntro") ?? false;
+
+  static Future<void> setShownNotificationIntro() async {
+    await _prefs.setBool("shownNotificationIntro", true);
+  }
+
   // SETTERS
   static Future<void> setUserType(String type) async {
     await _prefs.setString("userType", type);

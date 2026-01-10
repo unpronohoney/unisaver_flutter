@@ -30,7 +30,7 @@ class _CombinationsShowerState extends State<CombinationsShower> {
   List<Lecture> sortedLectures = Term.instance.sortedLectures;
   double? selectedGpa;
   List<int> indexes = [];
-  int totCred = 0;
+  double totCred = 0;
   List<List<double>> effects = [];
   bool showDetails = true;
 
@@ -80,7 +80,7 @@ class _CombinationsShowerState extends State<CombinationsShower> {
     }
 
     final oldInfo = t(context).agno_cred(
-      Term.instance.oldcred,
+      ((Term.instance.oldcred * 100).round() / 100),
       ((Term.instance.oldgpa * 100).round() / 100),
     );
 
@@ -127,7 +127,7 @@ class _CombinationsShowerState extends State<CombinationsShower> {
                                   for (int i = 0; i < indexes.length; i++) {
                                     final comb = combinations[indexes[i]];
 
-                                    int cred = actcred;
+                                    double cred = actcred;
                                     double smp = actgpa * actcred;
                                     effects.add([]);
                                     for (
@@ -603,12 +603,12 @@ class _CombinationsShowerState extends State<CombinationsShower> {
       "${t(context).term}\t${t(context).gpa_column}\t${t(context).credit}\n",
     );
     double oldgpa = Term.instance.oldgpa;
-    int oldcred = Term.instance.oldcred;
+    double oldcred = Term.instance.oldcred;
     double diff = ((selectedGpa! - oldgpa) * 100).round() / 100;
     String diffgpa = diff < 0 ? '$diff' : '+$diff';
     String diffcred = totCred - oldcred < 0
-        ? '${totCred - oldcred}'
-        : '+${totCred - oldcred}';
+        ? '${((totCred - oldcred) * 100).round() / 100}'
+        : '+${((totCred - oldcred) * 100).round() / 100}';
     buffer.write("${t(context).initial}\t$oldgpa\t$oldcred\n");
     buffer.write("${t(context).diff}\t$diffgpa\t$diffcred\n");
     buffer.write("${t(context).result}\t$selectedGpa\t$totCred\n");

@@ -64,7 +64,7 @@ class LectureCubit extends Cubit<LectureState> {
 
   void updateLectureForCombination(
     Lecture lect,
-    int? newcred,
+    double? newcred,
     String newoldLetter,
     bool isnewoldletternone,
   ) {
@@ -78,7 +78,7 @@ class LectureCubit extends Cubit<LectureState> {
 
   void updateLecture(
     Lecture lect,
-    int? newcred,
+    double? newcred,
     String newoldLetter,
     String newnewLetter,
     bool isnewoldletternone,

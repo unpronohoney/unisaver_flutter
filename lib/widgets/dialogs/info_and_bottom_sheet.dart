@@ -48,6 +48,7 @@ void showDescriptionBottomSheet(
     builder: (context) {
       return SafeArea(
         child: Container(
+          width: double.infinity,
           padding: const EdgeInsets.all(20),
           constraints: BoxConstraints(maxHeight: 50.h),
           decoration: BoxDecoration(
@@ -61,50 +62,48 @@ void showDescriptionBottomSheet(
               ),
             ],
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.tertiaryFixed.withValues(alpha: 0.4),
-                    borderRadius: BorderRadius.circular(100),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.tertiaryFixed.withValues(alpha: 0.4),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
                   ),
                 ),
-              ),
-
-              const SizedBox(height: 16),
-
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.tertiaryFixed,
-                ),
-              ),
-
-              const SizedBox(height: 16),
-              if (description != null)
+                const SizedBox(height: 16),
                 Text(
-                  description,
+                  title,
                   style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 16,
-                    color: Theme.of(context).colorScheme.secondaryFixed,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.tertiaryFixed,
                   ),
                 ),
-
-              SizedBox(height: 12),
-              if (content != null) Flexible(child: content),
-
-              const SizedBox(height: 20),
-            ],
+                const SizedBox(height: 16),
+                if (description != null)
+                  Text(
+                    description,
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.secondaryFixed,
+                    ),
+                  ),
+                const SizedBox(height: 12),
+                
+                if (content != null) content,
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       );

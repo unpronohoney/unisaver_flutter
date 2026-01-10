@@ -4,7 +4,7 @@ class Lecture {
   static final _uuid = Uuid();
 
   final String id;
-  int credit;
+  double credit;
   String letterGrade;
   String name;
   String newLetterGrade;
@@ -18,7 +18,7 @@ class Lecture {
     this.no = -1,
   }) : id = id ?? _uuid.v4();
 
-  void setCredit(int cred) {
+  void setCredit(double cred) {
     credit = cred;
   }
 
