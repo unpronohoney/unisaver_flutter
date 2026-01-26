@@ -66,18 +66,19 @@ Future<void> saveSemesterToLocalForCombination() async {
   await box.put('combination', data);
 }
 
-Future<bool> readSemesterForCombination() async {
+Future<int> readSemesterForCombination() async {
   final box = await Hive.openBox('semesters');
-  bool ret = false;
+  int ret = 0;
   if (box.containsKey('combination')) {
     final term = box.get('combination');
+    ret = 1;
     if (term is Map &&
         term.containsKey('oldGpa') &&
         term.containsKey('oldCredits')) {
       Term.instance.oldgpa = term['oldGpa'];
       Term.instance.oldcred = term['oldCredits'];
       Term.instance.resettoold();
-      ret = true;
+      ret = 2;
       if (term.containsKey('courses') && term['courses'] is List) {
         final courses = term['courses'];
         Term.instance.lectures.clear();
@@ -86,10 +87,12 @@ Future<bool> readSemesterForCombination() async {
             Lecture.fromMapForCombination(Map<String, dynamic>.from(course)),
           );
         }
+        ret = 3;
         if (term.containsKey('difficulties') && term['difficulties'] is Map) {
           Term.instance.difficulties = Map<String, int>.from(
             term['difficulties'],
           );
+          ret = 4;
         }
       }
     }

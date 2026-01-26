@@ -7,7 +7,7 @@
   "manuel_desc": "Önce AGNO ve toplam kredi bilgilerini ver.\nSonra derslerini eski ve yeni not bilgileriyle gir.\nUniSaver AGNO'yu her aşamada hesaplasın.",
   "combination_desc": "Önce, AGNO ve toplam kredi;\nSonra istediğin dersleri eski notlarıyla gir.\nDersleri zorluklarına göre sırala.\nToplam kombinasyon sayısını kısıtlar ile azalt.\nSonuçları görüntüle.",
   "transcript_desc": "E-Devlet transkriptini seç.\nBirazcık bekle.\nVe, UniSaver tüm transkripti taradı ve derslerini tablo haline getirdi.\nBütün değişiklikleri bu tablo ile yapabilirsin.",
-
+  "person": "Hesaplama Tercihi",
   "user_type_head": "Selam 👋\nAGNO asistanın merak ediyor;",
   "user_type_question": "Ortalama ve puan konusunda hangi sıfat seni en iyi tanımlar?",
   "description_question": "Bu bilgiyi hesaplama türlerinin performansını ölçmek için istiyorum. 😇",
@@ -17,6 +17,7 @@
   "curious_desc": "Senaryoları aklında oynamak yerine benimle hepsinin sonunu öğrenebilirsin.",
   "careful_desc": "E-Devlet transkriptini alıp tüm derslerin ile hesaplama yapabilirsin.",
   "decisive_desc": "Klasik yöntemlerden şaşmıyorsan benimle kolayca hesaplayabilirsin.",
+  "selected": "Seçili",
 
   "recommend_manual": "Kesin sonuçlar verir.",
   "recommend_comb": "Tüm ihtimalleri gösterir.",

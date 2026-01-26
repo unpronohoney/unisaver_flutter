@@ -1,5 +1,5 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:unisaver_flutter/utils/error_reporter.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:unisaver_flutter/constants/admob_ids.dart';
 import 'package:unisaver_flutter/constants/alerts.dart';
@@ -71,11 +71,10 @@ class _ManuelHesapPageState extends State<ManuelCalcPage> {
           ? ''
           : Term.instance.oldcred.toString();
     } catch (e, stackTrace) {
-      FirebaseCrashlytics.instance.recordError(
+      ErrorReporter.instance.reportError(
         e,
         stackTrace,
         reason: 'Manuel Hesap Init _isTermLocal parameter: $_isTermLocal',
-        fatal: false,
       );
     } finally {
       setState(() {

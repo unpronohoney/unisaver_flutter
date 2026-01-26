@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unisaver_flutter/constants/colors.dart';
+import 'package:unisaver_flutter/utils/loc.dart';
 
 class UserTypeButton extends StatefulWidget {
   final String imagePath; // PNG path
@@ -7,6 +8,7 @@ class UserTypeButton extends StatefulWidget {
   final String description;
   final VoidCallback onPressed;
   final double? width;
+  final bool selected;
 
   const UserTypeButton({
     super.key,
@@ -14,6 +16,7 @@ class UserTypeButton extends StatefulWidget {
     required this.title,
     required this.description,
     required this.onPressed,
+    required this.selected,
     this.width,
   });
 
@@ -40,7 +43,7 @@ class _UserTypeButtonState extends State<UserTypeButton> {
         width: widget.width,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: colors.primaryFixed,
+          color: widget.selected ? colors.tertiaryFixed : colors.primaryFixed,
           borderRadius: BorderRadius.circular(20),
           border: pressed
               ? null
@@ -75,7 +78,9 @@ class _UserTypeButtonState extends State<UserTypeButton> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.title,
+                    widget.selected
+                        ? '${widget.title} (${t(context).selected})'
+                        : widget.title,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                       fontFamily: 'Montserrat',

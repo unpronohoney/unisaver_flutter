@@ -33,6 +33,9 @@ class AppLocalizationsTr extends AppLocalizations {
       'E-Devlet transkriptini seç.\nBirazcık bekle.\nVe, UniSaver tüm transkripti taradı ve derslerini tablo haline getirdi.\nBütün değişiklikleri bu tablo ile yapabilirsin.';
 
   @override
+  String get person => 'Hesaplama Tercihi';
+
+  @override
   String get user_type_head => 'Selam 👋\nAGNO asistanın merak ediyor;';
 
   @override
@@ -51,6 +54,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get decisive => 'Kararlı';
+
+  @override
+  String get selected => 'Seçili';
 
   @override
   String get curious_desc =>

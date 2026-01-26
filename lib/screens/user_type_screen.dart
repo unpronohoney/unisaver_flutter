@@ -25,14 +25,30 @@ class UserTypeScreen extends StatefulWidget {
 class UserTypeScreenState extends State<UserTypeScreen> {
   bool _loading = false;
   bool _timeout = false;
+  int _preference = -1;
 
   @override
   void initState() {
     super.initState();
+    initPreference();
+  }
+
+  void initPreference() {
+    String? preference = LocalStorageService.userType;
+    if (preference != null) {
+      setState(() {
+        _preference = preference == "decisive"
+            ? 0
+            : preference == "curious"
+            ? 1
+            : 2;
+      });
+    }
+    debugPrint("_preference: $_preference, preference: $preference");
   }
 
   Future<void> processUserType(String type) async {
-    Timer(Duration(seconds: 20), () {
+    Timer(Duration(seconds: 10), () {
       if (!mounted) return;
       if (_loading) {
         setState(() {
@@ -47,7 +63,10 @@ class UserTypeScreenState extends State<UserTypeScreen> {
     });
     try {
       final auth = FirebaseAuth.instance;
-      final firestore = FirebaseFirestore.instanceFor(app: Firebase.app(), databaseId: 'users');
+      final firestore = FirebaseFirestore.instanceFor(
+        app: Firebase.app(),
+        databaseId: 'users',
+      );
       if (auth.currentUser == null) {
         await auth.signInAnonymously();
 
@@ -100,6 +119,17 @@ class UserTypeScreenState extends State<UserTypeScreen> {
                       child: Column(
                         children: [
                           const SizedBox(height: 16),
+
+                          UserTypeButton(
+                            imagePath: "assets/umpire.png",
+                            title: t(context).decisive,
+                            description: t(context).decisive_desc,
+                            onPressed: () async {
+                              await processUserType("decisive");
+                            },
+                            selected: _preference == 0,
+                          ),
+                          const SizedBox(height: 24),
                           UserTypeButton(
                             imagePath: "assets/question.png",
                             title: t(context).curious,
@@ -107,6 +137,7 @@ class UserTypeScreenState extends State<UserTypeScreen> {
                             onPressed: () async {
                               await processUserType("curious");
                             },
+                            selected: _preference == 1,
                           ),
 
                           const SizedBox(height: 24),
@@ -117,17 +148,7 @@ class UserTypeScreenState extends State<UserTypeScreen> {
                             onPressed: () async {
                               await processUserType("careful");
                             },
-                          ),
-
-                          const SizedBox(height: 24),
-
-                          UserTypeButton(
-                            imagePath: "assets/umpire.png",
-                            title: t(context).decisive,
-                            description: t(context).decisive_desc,
-                            onPressed: () async {
-                              await processUserType("decisive");
-                            },
+                            selected: _preference == 2,
                           ),
                         ],
                       ),
@@ -141,11 +162,16 @@ class UserTypeScreenState extends State<UserTypeScreen> {
             ),
           ),
           if (_loading) Loading(),
-          if (_timeout) AlertTemplate(title: t(context).req_timeout, exp: t(context).req_exp, onDismiss: () {
-            setState(() {
-              _timeout = false;
-            });
-          },)
+          if (_timeout)
+            AlertTemplate(
+              title: t(context).req_timeout,
+              exp: t(context).req_exp,
+              onDismiss: () {
+                setState(() {
+                  _timeout = false;
+                });
+              },
+            ),
         ],
       ),
     );

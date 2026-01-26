@@ -33,6 +33,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Select your e-Devlet transcript.\nWait a little bit.\nAnd, UniSaver scanned whole transcript and created table with your lessons.\nYou can make every changes with this table.';
 
   @override
+  String get person => 'Calculation Preference';
+
+  @override
   String get user_type_head => 'Hello 👋\nYour GPA assistant wonders;';
 
   @override
@@ -51,6 +54,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get decisive => 'Decisive';
+
+  @override
+  String get selected => 'Selected';
 
   @override
   String get curious_desc =>

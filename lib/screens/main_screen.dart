@@ -60,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
       if (status == TrackingStatus.notDetermined) {
         status = await AppTrackingTransparency.requestTrackingAuthorization();
       }
-      print("Takip İzni Durumu: $status");
+      //debugPrint("Takip İzni Durumu: $status");
     }
     await MobileAds.instance.initialize();
   }
@@ -309,6 +309,16 @@ class _MainScreenState extends State<MainScreen> {
                                             context
                                                 .read<ThemeController>()
                                                 .toggleTheme();
+                                          },
+                                        ),
+                                        _glassMenuItem(
+                                          icon: Icons.person,
+                                          text: t(context).person,
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              '/user_type',
+                                            );
                                           },
                                         ),
                                         _glassMenuItem(

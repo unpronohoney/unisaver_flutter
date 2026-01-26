@@ -177,29 +177,49 @@ class _StateLetterArrays extends State<LetterArrays> {
                                       child: Row(
                                         children: [
                                           Expanded(
-                                            child: RadioListTile(
-                                              radioScaleFactor: 1.5,
-                                              title: Text(
-                                                system['name'],
-                                                style: TextStyle(
-                                                  fontFamily: 'Roboto',
-                                                  color: Theme.of(
-                                                    context,
-                                                  ).colorScheme.secondaryFixed,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              value: system['name'],
-                                              groupValue: selected!['name'],
-                                              activeColor: Theme.of(
-                                                context,
-                                              ).colorScheme.secondaryFixed,
-                                              onChanged: (value) async {
+                                            child: InkWell(
+                                              onTap: () async {
                                                 await GradeSystemManager.selectSystem(
                                                   system,
                                                 );
                                               },
+                                              child: Row(
+                                                children: [
+                                                  RadioGroup<String>(
+                                                    groupValue:
+                                                        selected!['name'],
+                                                    onChanged: (value) async {
+                                                      if (value != null) {
+                                                        await GradeSystemManager.selectSystem(
+                                                          system,
+                                                        );
+                                                      }
+                                                    },
+                                                    child: Radio<String>(
+                                                      value: system['name'],
+                                                      toggleable: false,
+                                                      activeColor:
+                                                          Theme.of(context)
+                                                              .colorScheme
+                                                              .secondaryFixed,
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      system['name'],
+                                                      style: TextStyle(
+                                                        fontFamily: 'Roboto',
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondaryFixed,
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           ListEditButton(

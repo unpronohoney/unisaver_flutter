@@ -16,14 +16,18 @@
     <a href="#türkçe">Türkçe</a>
   </p>
 
-  <p align="center">
-    <a href="https://apps.apple.com/tr/app/unisaver/id6757317963">
-        <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&releaseDate=1276560000" height="50">
+  <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 20px;">
+    <a href="https://apps.apple.com/tr/app/unisaver/id6757317963" target="_blank" style="text-decoration: none;">
+        <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&releaseDate=1276560000" 
+             alt="Download on the App Store" 
+             style="height: 50px; width: auto; display: block;">
     </a>
-    &nbsp; <a href="https://play.google.com/store/apps/details?id=com.unisaver.unisaver">
-        <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="67">
+    <a href="https://play.google.com/store/apps/details?id=com.unisaver.unisaver" target="_blank" style="text-decoration: none;">
+        <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" 
+             alt="Get it on Google Play" 
+             style="height: 75px; width: auto; display: block;">
     </a>
-  </p>
+  </div>
 
 </div>
 

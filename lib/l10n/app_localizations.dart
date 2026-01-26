@@ -140,6 +140,12 @@ abstract class AppLocalizations {
   /// **'Select your e-Devlet transcript.\nWait a little bit.\nAnd, UniSaver scanned whole transcript and created table with your lessons.\nYou can make every changes with this table.'**
   String get transcript_desc;
 
+  /// No description provided for @person.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculation Preference'**
+  String get person;
+
   /// No description provided for @user_type_head.
   ///
   /// In en, this message translates to:
@@ -175,6 +181,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Decisive'**
   String get decisive;
+
+  /// No description provided for @selected.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get selected;
 
   /// No description provided for @curious_desc.
   ///

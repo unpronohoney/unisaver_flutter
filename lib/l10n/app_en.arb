@@ -7,13 +7,14 @@
   "manuel_desc": "First, give GPA and total credits.\nThen enter your lessons with old grade and your new grade.\nUniSaver calculates GPA every step.",
   "combination_desc": "First, GPA and total credits;\nThen enter lessons you want with old grades.\nList lessons by difficulties.\nReduce total combination count by constraints.\nView results.",
   "transcript_desc": "Select your e-Devlet transcript.\nWait a little bit.\nAnd, UniSaver scanned whole transcript and created table with your lessons.\nYou can make every changes with this table.",
-
+  "person": "Calculation Preference",
   "user_type_head": "Hello 👋\nYour GPA assistant wonders;",
   "user_type_question": "Which word best describes you in terms of average and score?",
   "description_question": "I need this information to measure the performance of different types of computations. 😇",
   "curious": "Curious",
   "careful": "Careful",
   "decisive": "Decisive",
+  "selected": "Selected",
 
   "curious_desc": "Instead of playing out the scenarios in your head, you can find out how they all end with me.",
   "careful_desc": "You can obtain your E-Devlet transcript and perform calculations using all your courses.",
