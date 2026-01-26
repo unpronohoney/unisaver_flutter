@@ -102,7 +102,7 @@ class ManuelStepState extends State<ManuelStep2> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final letters = LetterArray.letters;
     final oldInfo = t(context).agno_cred(
-      Term.instance.oldcred,
+      ((Term.instance.oldcred * 100).round() / 100),
       ((Term.instance.oldgpa * 100).round() / 100),
     );
     context.read<LectureCubit>().syncFromTerm();
@@ -110,7 +110,7 @@ class ManuelStepState extends State<ManuelStep2> with WidgetsBindingObserver {
     if (Term.instance.lectures.isNotEmpty) {
       gpaNotifier.value =
           '${t(context).gpa_column}: ${(Term.instance.gpa.currentGPA * 100).round() / 100}';
-      credNotifier.value = t(context).credits(Term.instance.gpa.totCred);
+      credNotifier.value = t(context).credits((Term.instance.gpa.totCred * 100).round() / 100);
     }
 
     return Scaffold(
@@ -264,7 +264,7 @@ class ManuelStepState extends State<ManuelStep2> with WidgetsBindingObserver {
                                         '${t(context).gpa_column}: ${(Term.instance.gpa.currentGPA * 100).round() / 100}';
                                     credNotifier.value = t(
                                       context,
-                                    ).credits(Term.instance.gpa.totCred);
+                                    ).credits((Term.instance.gpa.totCred * 100).round() / 100);
                                   }
                                   scheduleSave();
                                 },
@@ -362,7 +362,7 @@ class ManuelStepState extends State<ManuelStep2> with WidgetsBindingObserver {
                                             '${t(context).gpa_column}: ${(Term.instance.gpa.currentGPA * 100).round() / 100}';
                                         credNotifier.value = t(
                                           context,
-                                        ).credits(Term.instance.gpa.totCred);
+                                        ).credits((Term.instance.gpa.totCred * 100).round() / 100);
                                       }
                                       scheduleSave();
                                     },
@@ -400,8 +400,7 @@ class ManuelStepState extends State<ManuelStep2> with WidgetsBindingObserver {
                                                 gpaNotifier.value =
                                                     '${t(context).gpa_column}: ${(Term.instance.gpa.currentGPA * 100).round() / 100}';
                                                 credNotifier.value = t(context)
-                                                    .credits(
-                                                      Term.instance.gpa.totCred,
+                                                    .credits((Term.instance.gpa.totCred * 100).round() / 100,
                                                     );
                                                 scheduleSave();
                                               },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:unisaver_flutter/widgets/dialogs/bottom_sheet_constants.dart';
 
 Widget infoButton(
   BuildContext context,
@@ -46,63 +47,26 @@ void showDescriptionBottomSheet(
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
     builder: (context) {
-      return SafeArea(
+      return Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
         child: Container(
           padding: const EdgeInsets.all(20),
           constraints: BoxConstraints(maxHeight: 50.h),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.4),
-                blurRadius: 16,
-                offset: const Offset(0, -6),
-              ),
-            ],
-          ),
+          decoration: bottomSheetDecoration(context),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.tertiaryFixed.withValues(alpha: 0.4),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.tertiaryFixed,
-                ),
-              ),
-
+              bottomSheetHandler(context),
+              bottomSheetTitle(context, title),
               const SizedBox(height: 16),
               if (description != null)
-                Text(
-                  description,
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 16,
-                    color: Theme.of(context).colorScheme.secondaryFixed,
-                  ),
-                ),
-
-              SizedBox(height: 12),
-              if (content != null) Flexible(child: content),
-
+                bottomSheetDescription(context, description),
+              const SizedBox(height: 12),
+              if (content != null)
+                Expanded(child: SingleChildScrollView(child: content)),
               const SizedBox(height: 20),
             ],
           ),

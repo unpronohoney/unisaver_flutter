@@ -157,7 +157,9 @@ class _TranscriptTableState extends State<TranscriptTable> {
                               ),
 
                               Text(
-                                t(context).credits(reader!.computedCred),
+                                t(context).credits(
+                                  (reader!.computedCred * 100).round() / 100,
+                                ),
                                 style: TextStyle(
                                   fontFamily: 'Monospace',
                                   fontSize: 16,
@@ -380,6 +382,8 @@ class _TranscriptTableState extends State<TranscriptTable> {
       blendMode: BlendMode.dstIn,
       child: ListView.builder(
         itemCount: letters.length,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.symmetric(vertical: 16),
         itemBuilder: (context, index) {
           final grade = letters[index];
@@ -447,6 +451,36 @@ class _TranscriptTableState extends State<TranscriptTable> {
 
   Widget getMismatchDescription() {
     final mismatch = reader!.diffLevel;
+    Widget buildInfoText(String label, String value) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 4.0),
+        child: Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: "$label ",
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.secondaryFixed,
+                ),
+              ),
+              TextSpan(
+                text: value,
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.tertiaryFixed,
+                ),
+              ),
+            ],
+          ),
+          textAlign: TextAlign.start,
+        ),
+      );
+    }
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -454,77 +488,25 @@ class _TranscriptTableState extends State<TranscriptTable> {
         const SizedBox(height: 16),
         if (mismatch == 1 || mismatch == 3)
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    t(context).written_trans(t(context).gpa_column),
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.secondaryFixed,
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      reader!.gpa.toString(),
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 24,
-                        color: Theme.of(context).colorScheme.tertiaryFixed,
-                      ),
-                    ),
-                  ),
-                ],
+              buildInfoText(
+                t(context).written_trans(t(context).gpa_column),
+                reader!.gpa.toString(),
               ),
-              Row(
-                children: [
-                  Text(
-                    t(context).i_calculated(t(context).gpa_column),
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.secondaryFixed,
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      reader!.computedGpa.toString(),
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 24,
-                        color: Theme.of(context).colorScheme.tertiaryFixed,
-                      ),
-                    ),
-                  ),
-                ],
+              buildInfoText(
+                t(context).i_calculated(t(context).gpa_column),
+                reader!.computedGpa.toString(),
               ),
-              Row(
-                children: [
-                  Text(
-                    t(context).changes_will_calc,
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.secondaryFixed,
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      reader!.computedGpa.toString(),
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 24,
-                        color: Theme.of(context).colorScheme.tertiaryFixed,
-                      ),
-                    ),
-                  ),
-                ],
+              buildInfoText(
+                t(context).changes_will_calc,
+                reader!.computedGpa.toString(),
               ),
             ],
           ),
 
         if (mismatch == 3) const SizedBox(height: 16),
+
         if (mismatch == 3)
           Text(
             t(context).and,
@@ -534,69 +516,23 @@ class _TranscriptTableState extends State<TranscriptTable> {
               color: AppColors.grayishBlue,
             ),
           ),
+
         if (mismatch == 3) const SizedBox(height: 16),
         if (mismatch == 3 || mismatch == 2)
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    t(context).written_trans(t(context).credit),
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.secondaryFixed,
-                    ),
-                  ),
-                  Text(
-                    reader!.cred.toString(),
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 24,
-                      color: Theme.of(context).colorScheme.tertiaryFixed,
-                    ),
-                  ),
-                ],
+              buildInfoText(
+                t(context).written_trans(t(context).credit),
+                reader!.cred.toString(),
               ),
-              Row(
-                children: [
-                  Text(
-                    t(context).i_calculated(t(context).credit),
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.secondaryFixed,
-                    ),
-                  ),
-                  Text(
-                    reader!.computedCred.toString(),
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 24,
-                      color: Theme.of(context).colorScheme.tertiaryFixed,
-                    ),
-                  ),
-                ],
+              buildInfoText(
+                t(context).i_calculated(t(context).credit),
+                reader!.computedCred.toString(),
               ),
-              Row(
-                children: [
-                  Text(
-                    t(context).changes_will_calc,
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.secondaryFixed,
-                    ),
-                  ),
-                  Text(
-                    reader!.computedCred.toString(),
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 24,
-                      color: Theme.of(context).colorScheme.tertiaryFixed,
-                    ),
-                  ),
-                ],
+              buildInfoText(
+                t(context).changes_will_calc,
+                reader!.computedCred.toString(),
               ),
             ],
           ),

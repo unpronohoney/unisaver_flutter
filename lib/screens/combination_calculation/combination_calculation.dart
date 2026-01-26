@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:unisaver_flutter/constants/admob_ids.dart';
@@ -27,7 +28,7 @@ class _CombinationCalcPageState extends State<CombinationCalcPage> {
   final _credController = TextEditingController();
   bool _isBannerLoaded = false;
   bool _isLoading = false;
-  bool _isTermLocal = false;
+  int _isTermLocal = -1;
 
   late BannerAd _banner;
 
@@ -61,16 +62,26 @@ class _CombinationCalcPageState extends State<CombinationCalcPage> {
     setState(() {
       _isLoading = true;
     });
-    _isTermLocal = await readSemesterForCombination();
-    _gpaController.text = Term.instance.oldgpa == 0
-        ? ''
-        : Term.instance.oldgpa.toString();
-    _credController.text = Term.instance.oldcred == 0
-        ? ''
-        : Term.instance.oldcred.toString();
-    setState(() {
-      _isLoading = false;
-    });
+    try {
+      _isTermLocal = await readSemesterForCombination();
+      _gpaController.text = Term.instance.oldgpa == 0
+          ? ''
+          : Term.instance.oldgpa.toString();
+      _credController.text = Term.instance.oldcred == 0
+          ? ''
+          : Term.instance.oldcred.toString();
+    } catch (e, stackTrace) {
+      FirebaseCrashlytics.instance.recordError(
+        e,
+        stackTrace,
+        reason: 'Combination Hesap Init _isTermLocal parameter: $_isTermLocal',
+        fatal: false,
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -126,7 +137,7 @@ class _CombinationCalcPageState extends State<CombinationCalcPage> {
                         PurpleButton(
                           text: t(context).butPassAdding,
                           onPressed: () {
-                            if (_isTermLocal) {
+                            if (_isTermLocal > 1) {
                               Navigator.pushNamed(
                                 context,
                                 '/combination/courses',

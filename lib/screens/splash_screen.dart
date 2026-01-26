@@ -27,22 +27,17 @@ class _StateSplashScreen extends State<SplashScreen> {
     bool isFirst = LocalStorageService.isFirstRun;
     if (!mounted) return;
     if (isFirst) {
-      Navigator.pushNamed(context, '/user_type');
+      Navigator.pushReplacementNamed(context, '/user_type');
     } else {
-      Navigator.pushNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/home');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Arka plan rengin
-      body: Center(
-        child: Lottie.asset(
-          'assets/unisaver_splash.json', // Dosya yolun
-          // İsteğe bağlı: Ekrana sığdırma ayarı
-        ),
-      ),
+      backgroundColor: Colors.white,
+      body: Center(child: Lottie.asset('assets/unisaver_splash.json')),
     );
   }
 }

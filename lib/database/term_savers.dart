@@ -1,4 +1,4 @@
-import 'dart:developer';
+//import 'dart:developer';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:unisaver_flutter/system/lecture.dart';
@@ -12,25 +12,26 @@ Future<void> saveSemesterToLocalForManuel() async {
     'courses': Term.instance.lectures.map((c) => c.toMapForManuel()).toList(),
   };
 
-  log('datamız: $data');
+  //log('datamız: $data');
 
   await box.put('manuel', data);
 }
 
-Future<bool> readSemesterForManuel() async {
+Future<int> readSemesterForManuel() async {
   final box = await Hive.openBox('semesters');
-  bool ret = false;
-  log('message');
+  int ret = 0; // 0: yok, 1: manuel var, 2: manuel okundu, 3: dersler okundu
+  //log('message');
   if (box.containsKey('manuel')) {
     final term = box.get('manuel');
-    log('term: $term');
+    //log('term: $term');
+    ret = 1;
     if (term is Map &&
         term.containsKey('oldGpa') &&
         term.containsKey('oldCredits')) {
       Term.instance.oldgpa = term['oldGpa'];
       Term.instance.oldcred = term['oldCredits'];
       Term.instance.resettoold();
-      ret = true;
+      ret = 2;
       if (term.containsKey('courses') && term['courses'] is List) {
         final courses = term['courses'];
         Term.instance.lectures.clear();
@@ -41,12 +42,13 @@ Future<bool> readSemesterForManuel() async {
         }
         Term.instance.calculate();
       }
-      log(
-        'gpa: ${Term.instance.gpa.currentGPA} - credits: ${Term.instance.gpa.totCred}',
-      );
+      //log(
+      //  'gpa: ${Term.instance.gpa.currentGPA} - credits: ${Term.instance.gpa.totCred}',
+      //);
+      ret = 3;
     }
   }
-  log('ret: $ret');
+  //log('ret: $ret');
   return ret;
 }
 
@@ -60,7 +62,7 @@ Future<void> saveSemesterToLocalForCombination() async {
         .toList(),
     'difficulties': Term.instance.difficulties,
   };
-  log('datamız: $data');
+  //log('datamız: $data');
   await box.put('combination', data);
 }
 

@@ -1,8 +1,10 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:unisaver_flutter/constants/admob_ids.dart';
 import 'package:unisaver_flutter/constants/alerts.dart';
 import 'package:unisaver_flutter/constants/background2.dart';
+import 'package:unisaver_flutter/database/grade_system_manager.dart';
 import 'package:unisaver_flutter/database/term_savers.dart';
 import 'package:unisaver_flutter/system/grade_point_average.dart';
 import 'package:unisaver_flutter/system/letter_array.dart';
@@ -26,14 +28,19 @@ class _ManuelHesapPageState extends State<ManuelCalcPage> {
   final _credController = TextEditingController();
   bool _isBannerLoaded = false;
   bool _isLoading = false;
-  bool _isTermLocal = false;
+  int _isTermLocal = -1;
 
   late BannerAd _banner;
 
   @override
   void initState() {
     super.initState();
-
+    _gpaController.text = Term.instance.oldgpa == 0
+        ? ''
+        : Term.instance.oldgpa.toString();
+    _credController.text = Term.instance.oldcred == 0
+        ? ''
+        : Term.instance.oldcred.toString();
     _banner = BannerAd(
       adUnitId: AdMobIds.manuelBanner,
       size: AdSize.banner,
@@ -47,6 +54,7 @@ class _ManuelHesapPageState extends State<ManuelCalcPage> {
         },
       ),
     )..load();
+    GradeSystemManager.initLetterArray();
     initManuel();
   }
 
@@ -54,16 +62,26 @@ class _ManuelHesapPageState extends State<ManuelCalcPage> {
     setState(() {
       _isLoading = true;
     });
-    _isTermLocal = await readSemesterForManuel();
-    _gpaController.text = Term.instance.oldgpa == 0
-        ? ''
-        : Term.instance.oldgpa.toString();
-    _credController.text = Term.instance.oldcred == 0
-        ? ''
-        : Term.instance.oldcred.toString();
-    setState(() {
-      _isLoading = false;
-    });
+    try {
+      _isTermLocal = await readSemesterForManuel();
+      _gpaController.text = Term.instance.oldgpa == 0
+          ? ''
+          : Term.instance.oldgpa.toString();
+      _credController.text = Term.instance.oldcred == 0
+          ? ''
+          : Term.instance.oldcred.toString();
+    } catch (e, stackTrace) {
+      FirebaseCrashlytics.instance.recordError(
+        e,
+        stackTrace,
+        reason: 'Manuel Hesap Init _isTermLocal parameter: $_isTermLocal',
+        fatal: false,
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -119,7 +137,7 @@ class _ManuelHesapPageState extends State<ManuelCalcPage> {
                         PurpleButton(
                           text: t(context).butPassAdding,
                           onPressed: () {
-                            if (_isTermLocal) {
+                            if (_isTermLocal > 1) {
                               Navigator.pushNamed(context, '/manuel/courses');
                               return;
                             }

@@ -80,7 +80,7 @@ class _CombinationsShowerState extends State<CombinationsShower> {
     }
 
     final oldInfo = t(context).agno_cred(
-      Term.instance.oldcred,
+      ((Term.instance.oldcred * 100).round() / 100),
       ((Term.instance.oldgpa * 100).round() / 100),
     );
 
@@ -607,8 +607,8 @@ class _CombinationsShowerState extends State<CombinationsShower> {
     double diff = ((selectedGpa! - oldgpa) * 100).round() / 100;
     String diffgpa = diff < 0 ? '$diff' : '+$diff';
     String diffcred = totCred - oldcred < 0
-        ? '${totCred - oldcred}'
-        : '+${totCred - oldcred}';
+        ? '${((totCred - oldcred) * 100).round() / 100}'
+        : '+${((totCred - oldcred) * 100).round() / 100}';
     buffer.write("${t(context).initial}\t$oldgpa\t$oldcred\n");
     buffer.write("${t(context).diff}\t$diffgpa\t$diffcred\n");
     buffer.write("${t(context).result}\t$selectedGpa\t$totCred\n");
