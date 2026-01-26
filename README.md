@@ -16,12 +16,14 @@
     <a href="#türkçe">Türkçe</a>
   </p>
 
-  <a href="https://apps.apple.com/tr/app/unisaver/id6757317963">
-    <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&releaseDate=1276560000" height="50">
-  </a>
-  <a href="https://play.google.com/store/apps/details?id=com.unisaver.unisaver">
-    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="74" style="margin-top: -10px;">
-  </a>
+  <p align="center">
+    <a href="https://apps.apple.com/tr/app/unisaver/id6757317963">
+        <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&releaseDate=1276560000" height="50">
+    </a>
+    &nbsp; <a href="https://play.google.com/store/apps/details?id=com.unisaver.unisaver">
+        <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="67">
+    </a>
+  </p>
 
 </div>
 
@@ -45,9 +47,9 @@
 
 ### 📸 Screenshots
 
-| Home & Dashboard | Transcript Import | Combination Calc | Manual Entry |
-|:---:|:---:|:---:|:---:|
-| <img src="assets/screenshots/en_home.png" width="200"> | <img src="assets/screenshots/en_transcript.png" width="200"> | <img src="assets/screenshots/en_combo.png" width="200"> | <img src="assets/screenshots/en_manual.png" width="200"> |
+| Personality | Home & Dashboard | Transcript Table | Combination Calc | Manual Entry |
+|:---:|:---:|:---:|:---:|:---:|
+| <img src="assets/screenshots/en_person.png" width="200"> | <img src="assets/screenshots/en_home.png" width="200"> | <img src="assets/screenshots/en_transcript.png" width="200"> | <img src="assets/screenshots/en_combo.png" width="200"> | <img src="assets/screenshots/en_manual.png" width="200"> |
 
 ---
 
@@ -69,9 +71,9 @@
 
 ### 📸 Ekran Görüntüleri
 
-| Ana Sayfa | Transkript Yükleme | Kombinasyon Hesabı | Manuel Hesaplama |
-|:---:|:---:|:---:|:---:|
-| <img src="assets/screenshots/tr_home.png" width="200"> | <img src="assets/screenshots/tr_transcript.png" width="200"> | <img src="assets/screenshots/tr_combo.png" width="200"> | <img src="assets/screenshots/tr_manual.png" width="200"> |
+| Kişilik | Ana Sayfa | Transkript Tablosu | Kombinasyon Hesabı | Manuel Hesaplama |
+|:---:|:---:|:---:|:---:|:---:|
+| <img src="assets/screenshots/tr_person.png" width="200"> | <img src="assets/screenshots/tr_home.png" width="200"> | <img src="assets/screenshots/tr_transcript.png" width="200"> | <img src="assets/screenshots/tr_combo.png" width="200"> | <img src="assets/screenshots/tr_manual.png" width="200"> |
 
 ---
 
